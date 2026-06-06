@@ -1,1 +1,78 @@
+/* Mengunci ukuran container menjadi rasio A4 */
+.cv-a4 {
+    width: 210mm;
+    min-height: 297mm;
+    background: white;
+    box-sizing: border-box;
+    /* Skala untuk layar kecil agar tetap terlihat A4 di preview */
+    transform-origin: top center;
+}
 
+@media (max-width: 1024px) {
+    .cv-a4 {
+        transform: scale(0.8);
+        margin-bottom: -20%;
+    }
+}
+@media (max-width: 768px) {
+    .cv-a4 {
+        transform: scale(0.5);
+        margin-bottom: -50%;
+    }
+}
+
+/* =========================================
+   SISTEM TEMA (TEMPLATES)
+========================================= */
+
+/* 1. Template Modern (Biru) */
+.cv-template-modern .cv-header {
+    background-color: #2563eb; /* Tailwind blue-600 */
+    font-family: ui-sans-serif, system-ui, sans-serif;
+}
+.cv-template-modern .cv-text-accent {
+    color: #2563eb;
+}
+.cv-template-modern .cv-border-accent {
+    border-color: #2563eb;
+}
+
+/* 2. Template Minimalist (Monokrom) */
+.cv-template-minimalist .cv-header {
+    background-color: #1f2937; /* Tailwind gray-800 */
+    color: white;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+}
+.cv-template-minimalist .cv-text-accent {
+    color: #374151;
+}
+.cv-template-minimalist .cv-border-accent {
+    border-color: #1f2937;
+}
+
+/* 3. Template Classic (Serif) */
+.cv-template-classic {
+    font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+}
+.cv-template-classic .cv-header {
+    background-color: transparent;
+    color: #000;
+    border-bottom: 4px solid #000;
+    padding-bottom: 1rem;
+    padding-top: 2rem;
+}
+.cv-template-classic h1, .cv-template-classic h2 {
+    color: #000;
+}
+.cv-template-classic .cv-text-accent {
+    color: #000;
+    font-weight: bold;
+}
+.cv-template-classic .cv-border-accent {
+    border-color: #000;
+}
+
+/* Perbaikan untuk ekspor PDF html2pdf */
+.html2pdf__page-break {
+    page-break-before: always;
+}
