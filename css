@@ -1,78 +1,120 @@
-/* Mengunci ukuran container menjadi rasio A4 */
+/* Rasio A4 Base */
 .cv-a4 {
     width: 210mm;
     min-height: 297mm;
     background: white;
     box-sizing: border-box;
-    /* Skala untuk layar kecil agar tetap terlihat A4 di preview */
     transform-origin: top center;
+    display: flex; /* Flexbox sangat penting di sini */
 }
 
-@media (max-width: 1024px) {
-    .cv-a4 {
-        transform: scale(0.8);
-        margin-bottom: -20%;
-    }
-}
-@media (max-width: 768px) {
-    .cv-a4 {
-        transform: scale(0.5);
-        margin-bottom: -50%;
-    }
+@media (max-width: 1024px) { .cv-a4 { transform: scale(0.8); margin-bottom: -20%; } }
+@media (max-width: 768px) { .cv-a4 { transform: scale(0.5); margin-bottom: -50%; } }
+.html2pdf__page-break { page-break-before: always; }
+
+/* Struktur Base */
+.cv-sidebar { width: 35%; flex-shrink: 0; }
+.cv-main { width: 65%; flex-grow: 1; }
+
+/* Garis Timeline Buatan (Kiri) */
+.cv-timeline {
+    border-left: 2px solid currentcolor;
+    padding-bottom: 0.5rem;
 }
 
 /* =========================================
-   SISTEM TEMA (TEMPLATES)
+   GAYA 1: SIDEBAR KIRI GELAP (MODERN BIRU)
 ========================================= */
+.cv-layout-left-dark {
+    flex-direction: row; /* Sidebar di Kiri */
+}
+.cv-layout-left-dark .cv-sidebar {
+    background-color: #0f172a; /* Slate 900 */
+    color: #f8fafc;
+}
+.cv-layout-left-dark .cv-main {
+    background-color: #ffffff;
+    color: #1e293b;
+}
+/* Bentuk Foto: Bulat Sempurna */
+.cv-layout-left-dark .cv-photo-container {
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    border: 6px solid #3b82f6; /* Aksen Biru */
+}
+.cv-layout-left-dark .cv-side-heading { border-bottom: 1px solid #3b82f6; padding-bottom: 5px; }
+.cv-layout-left-dark .cv-icon-box { color: #3b82f6; width: 20px; text-align: center; }
+.cv-layout-left-dark .cv-skill-badge {
+    background-color: #1e293b; border: 1px solid #3b82f6; color: #f8fafc;
+    padding: 4px 12px; border-radius: 99px;
+}
+.cv-layout-left-dark .cv-header-area h1 { color: #0f172a; }
+.cv-layout-left-dark .cv-header-area h2 { color: #3b82f6; }
+.cv-layout-left-dark .cv-main-border { border-color: #3b82f6; }
+.cv-layout-left-dark .cv-main-heading { color: #3b82f6; }
 
-/* 1. Template Modern (Biru) */
-.cv-template-modern .cv-header {
-    background-color: #2563eb; /* Tailwind blue-600 */
-    font-family: ui-sans-serif, system-ui, sans-serif;
-}
-.cv-template-modern .cv-text-accent {
-    color: #2563eb;
-}
-.cv-template-modern .cv-border-accent {
-    border-color: #2563eb;
-}
 
-/* 2. Template Minimalist (Monokrom) */
-.cv-template-minimalist .cv-header {
-    background-color: #1f2937; /* Tailwind gray-800 */
-    color: white;
-    font-family: ui-sans-serif, system-ui, sans-serif;
+/* =========================================
+   GAYA 2: SIDEBAR KANAN GELAP (ELEGAN HITAM)
+========================================= */
+.cv-layout-right-dark {
+    flex-direction: row-reverse; /* Sidebar pindah ke Kanan! */
 }
-.cv-template-minimalist .cv-text-accent {
-    color: #374151;
+.cv-layout-right-dark .cv-sidebar {
+    background-color: #18181b; /* Hitam pekat */
+    color: #e4e4e7;
 }
-.cv-template-minimalist .cv-border-accent {
-    border-color: #1f2937;
+.cv-layout-right-dark .cv-main {
+    background-color: #fafafa;
+    color: #27272a;
 }
+/* Bentuk Foto: Kotak Membulat (Squircle) */
+.cv-layout-right-dark .cv-photo-container {
+    width: 180px; height: 180px;
+    border-radius: 24px;
+    border: none;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+.cv-layout-right-dark .cv-side-heading { color: #d4d4d8; font-weight: 300; letter-spacing: 4px; }
+.cv-layout-right-dark .cv-icon-box { color: #a1a1aa; width: 20px; text-align: center; }
+.cv-layout-right-dark .cv-skill-badge {
+    background-color: #27272a; color: #e4e4e7;
+    padding: 4px 12px; border-radius: 4px; border-left: 3px solid #a1a1aa;
+}
+.cv-layout-right-dark .cv-header-area h1 { color: #18181b; }
+.cv-layout-right-dark .cv-header-area h2 { color: #71717a; }
+.cv-layout-right-dark .cv-main-border { border-color: #18181b; }
+.cv-layout-right-dark .cv-main-heading { color: #18181b; border-bottom: 2px solid #e4e4e7; padding-bottom: 5px; }
 
-/* 3. Template Classic (Serif) */
-.cv-template-classic {
-    font-family: Georgia, Cambria, "Times New Roman", Times, serif;
-}
-.cv-template-classic .cv-header {
-    background-color: transparent;
-    color: #000;
-    border-bottom: 4px solid #000;
-    padding-bottom: 1rem;
-    padding-top: 2rem;
-}
-.cv-template-classic h1, .cv-template-classic h2 {
-    color: #000;
-}
-.cv-template-classic .cv-text-accent {
-    color: #000;
-    font-weight: bold;
-}
-.cv-template-classic .cv-border-accent {
-    border-color: #000;
-}
 
-/* Perbaikan untuk ekspor PDF html2pdf */
-.html2pdf__page-break {
-    page-break-before: always;
+/* =========================================
+   GAYA 3: SIDEBAR KIRI TERANG (MINIMALIS)
+========================================= */
+.cv-layout-left-light {
+    flex-direction: row; 
 }
+.cv-layout-left-light .cv-sidebar {
+    background-color: #e5e7eb; /* Abu-abu sangat terang */
+    color: #1f2937;
+    border-right: 1px solid #d1d5db;
+}
+.cv-layout-left-light .cv-main {
+    background-color: #ffffff;
+    color: #111827;
+}
+/* Bentuk Foto: Bulat Besar tanpa border tebal */
+.cv-layout-left-light .cv-photo-container {
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 2px solid #9ca3af;
+}
+.cv-layout-left-light .cv-side-heading { border-bottom: 2px solid #111827; padding-bottom: 4px; color: #111827; }
+.cv-layout-left-light .cv-icon-box { color: #4b5563; width: 20px; text-align: center; }
+.cv-layout-left-light .cv-skill-badge {
+    background-color: #ffffff; color: #1f2937; border: 1px solid #9ca3af;
+    padding: 2px 10px; border-radius: 12px; font-weight: 500;
+}
+.cv-layout-left-light .cv-header-area h1 { color: #111827; font-family: Georgia, serif; }
+.cv-layout-left-light .cv-header-area h2 { color: #4b5563; }
+.cv-layout-left-light .cv-main-border { border-color: #e5e7eb; border-bottom-width: 2px; }
+.cv-layout-left-light .cv-main-heading { color: #111827; font-family: Georgia, serif;}
