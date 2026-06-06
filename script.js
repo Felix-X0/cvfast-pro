@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Penangkapan Elemen Form Input Sisi Kiri
+    // Menangkap Elemen Input Form Kiri
     const inputs = {
         layout: document.getElementById('layoutSelect'),
         theme: document.getElementById('themeSelect'),
@@ -19,67 +19,64 @@ document.addEventListener('DOMContentLoaded', () => {
         skills: document.getElementById('skillsInput')
     };
 
-    // Penangkapan Elemen Output Pratinjau Kertas Kanan
-    const previews = {
-        paper: document.getElementById('cvPreview'),
-        photo: document.getElementById('cvPhoto'),
-        name: document.getElementById('cvName'),
-        title: document.getElementById('cvTitle'),
-        email: document.getElementById('cvEmail'),
-        phone: document.getElementById('cvPhone'),
-        address: document.getElementById('cvAddress'),
-        link: document.getElementById('cvLink'),
-        about: document.getElementById('cvAbout'),
-        expTitle: document.getElementById('cvExpTitle'),
-        expDate: document.getElementById('cvExpDate'),
-        expList: document.getElementById('cvExpList'),
-        eduTitle: document.getElementById('cvEduTitle'),
-        eduDate: document.getElementById('cvEduDate'),
-        skillsList: document.getElementById('cvSkillsList')
-    };
-
-    // Fungsi Sinkronisasi Data Real-Time
+    // Fungsi sinkronisasi teks massal target Class/ID bercabang di layout
     const updatePreview = () => {
-        if (!previews.paper) return;
+        if (!inputs.layout) return;
 
-        previews.name.innerText = inputs.name.value || 'Amelia Putri';
-        previews.title.innerText = inputs.title.value || 'Software Engineer';
-        previews.email.innerText = inputs.email.value || 'amelia@email.com';
-        previews.phone.innerText = inputs.phone.value || '0812-xxxx-xxxx';
-        previews.address.innerText = inputs.address.value || 'Jakarta, Indonesia';
-        previews.link.innerText = inputs.link.value || 'linkedin.com/in/username';
-        previews.about.innerText = inputs.about.value || 'Saya adalah seorang profesional yang berkomitmen tinggi dan berpengalaman dalam membangun solusi teknologi inovatif...';
-        previews.expTitle.innerText = inputs.expTitle.value || 'Software Engineer - PT Teknologi';
-        previews.expDate.innerText = inputs.expDate.value || '2022 - Sekarang';
-        previews.eduTitle.innerText = inputs.eduTitle.value || 'S1 Ilmu Komputer - Universitas Indonesia';
-        previews.eduDate.innerText = inputs.eduDate.value || '2018 - 2022';
+        const nameVal = inputs.name.value || 'Amelia Putri';
+        const titleVal = inputs.title.value || 'Software Engineer';
+        const emailVal = inputs.email.value || 'amelia@email.com';
+        const phoneVal = inputs.phone.value || '0812-xxxx-xxxx';
+        const addressVal = inputs.address.value || 'Jakarta, Indonesia';
+        const linkVal = inputs.link.value || 'linkedin.com/in/username';
 
-        // Pengolahan Pil Keahlian (Skills Badges)
+        // Update semua elemen nama & kontak yang bercabang di layout
+        document.querySelectorAll('.dynamic-name').forEach(el => el.innerText = nameVal);
+        document.querySelectorAll('.dynamic-title').forEach(el => el.innerText = titleVal);
+        document.querySelectorAll('.dynamic-email').forEach(el => el.innerText = emailVal);
+        document.querySelectorAll('.dynamic-phone').forEach(el => el.innerText = phoneVal);
+        document.querySelectorAll('.dynamic-address').forEach(el => el.innerText = addressVal);
+        document.querySelectorAll('.dynamic-link').forEach(el => el.innerText = linkVal);
+
+        // Update section deskripsi tunggal
+        document.getElementById('cvAbout').innerText = inputs.about.value || 'Saya adalah seorang profesional yang berkomitmen tinggi dan berpengalaman membangun solusi teknologi inovatif...';
+        document.getElementById('cvExpTitle').innerText = inputs.expTitle.value || 'Software Engineer - PT Tech Nusantara';
+        document.getElementById('cvExpDate').innerText = inputs.expDate.value || '2022 - Sekarang';
+        document.getElementById('cvEduTitle').innerText = inputs.eduTitle.value || 'S1 Ilmu Komputer - Universitas Indonesia';
+        document.getElementById('cvEduDate').innerText = inputs.eduDate.value || '2018 - 2022';
+
+        // Pemisahan koma untuk keahlian (Skills Badges/Badges)
         const skillsArray = inputs.skills.value.split(',').filter(s => s.trim() !== '');
-        previews.skillsList.innerHTML = skillsArray.length > 0 
+        document.getElementById('cvSkillsList').innerHTML = skillsArray.length > 0 
             ? skillsArray.map(skill => `<li>${skill.trim()}</li>`).join('') 
-            : '<li>Node.js</li><li>React</li><li>Manajemen Proyek</li>';
+            : '<li>Node.js</li><li>React</li><li>Git</li>';
 
-        // Pengolahan Kalimat Deskripsi Pekerjaan (Memisah koma menjadi baris baru)
+        // Pemisahan koma untuk deskripsi riwayat kerja (List Bullets)
         const expArray = inputs.expDesc.value.split(',').filter(e => e.trim() !== '');
-        previews.expList.innerHTML = expArray.length > 0 
-            ? expArray.map(exp => `<li>${exp.trim()}.</li>`).join('') 
-            : '<li>Mengembangkan sistem aplikasi internal</li><li>Memimpin tim engineering untuk rilis produk baru</li>';
+        document.getElementById('cvExpList').innerHTML = expArray.length > 0 
+            ? expArray.map(exp => `<li>${exp.trim()}</li>`).join('') 
+            : '<li>Mengembangkan sistem aplikasi internal berbasis web.</li><li>Memimpin tim engineering untuk rilis produk baru skala nasional.</li>';
 
-        // Penerapan Dinamis Atribut Tema Warna dan Aturan Tata Letak
-        previews.paper.className = `a4-paper ${inputs.layout.value}`;
-        previews.paper.style.setProperty('--cv-color', inputs.theme.value);
+        // Terapkan tema warna dan layout class utama
+        const previewPaper = document.getElementById('cvPreview');
+        if (previewPaper) {
+            previewPaper.className = `a4-paper ${inputs.layout.value}`;
+            previewPaper.style.setProperty('--cv-color', inputs.theme.value);
+        }
     };
 
-    // Logika Alur Unggah Gambar dan Konversi ke Base64
+    // Pengolahan File Foto Profil (FileReader)
     if (inputs.photo) {
         inputs.photo.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
-                    previews.photo.src = event.target.result;
-                    previews.photo.style.display = 'block';
+                    // Update semua elemen foto (di header atas atau sidebar samping)
+                    document.querySelectorAll('.cvPhotoClass').forEach(img => {
+                        img.src = event.target.result;
+                        img.style.display = 'block';
+                    });
                     localStorage.setItem('cv_photo_pro', event.target.result);
                 };
                 reader.readAsDataURL(file);
@@ -87,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Pemasangan Event Listener Pengisian Teks
+    // Pasang Event Listener Real-time di semua input
     Object.keys(inputs).forEach(key => {
         if (inputs[key] && key !== 'photo') {
             inputs[key].addEventListener('input', updatePreview);
@@ -95,41 +92,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Fitur Asisten Penulis AI (AI Writer Simulation)
+    // Fitur AI Simulator Generator Kalimat Profesional
     document.getElementById('aiBtn').addEventListener('click', () => {
-        const currentTitle = inputs.title.value || 'Profesional';
-        const aiButton = document.getElementById('aiBtn');
+        const title = inputs.title.value || 'Profesional';
+        const aiBtn = document.getElementById('aiBtn');
+        aiBtn.innerText = '⏳ Menyusun Teks...';
         
-        aiButton.innerText = '⏳ Menyusun Teks...';
-        aiButton.style.opacity = '0.6';
-
-        // Kumpulan Template Profil Kaya Kompetensi Sesuai Jabatan
         const templates = [
-            `Seorang ${currentTitle} yang berdedikasi tinggi dengan rekam jejak solid dalam mengoptimalkan efisiensi kerja dan memecahkan tantangan teknis kompleks. Memiliki kemampuan analisis kuat serta adaptasi cepat dalam lingkungan tim dinamis.`,
-            `Profesional berpengalaman di bidang ${currentTitle} dengan spesialisasi pengembangan strategi inovatif. Memiliki komunikasi interpersonal yang unggul guna menjembatani kebutuhan teknis dan manajemen target perusahaan.`,
-            `Lulusan berprestasi yang berfokus penuh pada kompetensi ${currentTitle}. Memiliki fondasi teori mendalam, terbiasa mengelola alur kerja terstruktur, dan siap berkontribusi aktif dalam proyek skala besar.`
+            `Seorang ${title} yang berdedikasi tinggi dengan rekam jejak solid mengoptimalkan efisiensi kerja dan memecahkan tantangan teknis kompleks. Memiliki kemampuan analisis kuat serta adaptasi cepat dalam tim dinamis.`,
+            `Profesional berpengalaman di bidang ${title} dengan spesialisasi pengembangan strategi inovatif. Memiliki komunikasi interpersonal yang unggul guna menjembatani kebutuhan teknis dan target perusahaan.`,
+            `Lulusan baru dengan passion kuat di bidang ${title}. Memiliki pemahaman teori yang mendalam, kemampuan adaptasi cepat, serta siap berkontribusi positif dan berkembang bersama perusahaan.`
         ];
 
         setTimeout(() => {
-            const selectedText = templates[Math.floor(Math.random() * templates.length)];
-            inputs.about.value = selectedText;
+            inputs.about.value = templates[Math.floor(Math.random() * templates.length)];
             updatePreview();
-            aiButton.innerText = '✨ Buat dengan AI';
-            aiButton.style.opacity = '1';
+            aiBtn.innerText = '✨ Buat dengan AI';
         }, 1200);
     });
 
-    // Fitur Simpan Draft Lokal Browser
+    // Simpan Draft Lokal Browser
     document.getElementById('saveBtn').addEventListener('click', () => {
         const dataSave = {};
         Object.keys(inputs).forEach(key => {
             if(key !== 'photo' && inputs[key]) dataSave[key] = inputs[key].value;
         });
         localStorage.setItem('cv_data_pro', JSON.stringify(dataSave));
-        alert('Draft CV Anda berhasil tersimpan secara lokal!');
+        alert('Draft CV berhasil disimpan lokal!');
     });
 
-    // Pemuatan Otomatis Data Saat Halaman Dibuka Kembali
+    // Load Data Otomatis saat Aplikasi Dibuka Kembali
     const initApp = () => {
         const savedData = JSON.parse(localStorage.getItem('cv_data_pro'));
         if (savedData) {
@@ -138,23 +130,24 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         const savedPhoto = localStorage.getItem('cv_photo_pro');
-        if (savedPhoto && previews.photo) {
-            previews.photo.src = savedPhoto;
-            previews.photo.style.display = 'block';
+        if (savedPhoto) {
+            document.querySelectorAll('.cvPhotoClass').forEach(img => {
+                img.src = savedPhoto;
+                img.style.display = 'block';
+            });
         }
         updatePreview();
     };
 
-    // Fungsi Ekspor PDF dengan Loading State
+    // Ekspor PDF Dokumen Premium
     document.getElementById('exportPdfBtn').addEventListener('click', function() {
         const element = document.getElementById('cvPreview');
         const originalText = this.innerText;
         this.innerText = '⏳ Memproses PDF...';
-        this.disabled = true;
 
         const config = {
             margin:       0,
-            filename:     `${inputs.name.value || 'CV'}_Premium.pdf`,
+            filename:     `${inputs.name.value || 'CV'}_Professional.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2, useCORS: true },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -162,7 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         html2pdf().set(config).from(element).save().then(() => {
             this.innerText = originalText;
-            this.disabled = false;
         });
     });
 
