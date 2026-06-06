@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Mapping ID Input ke ID Preview
     const fieldMapping = {
         'input-name': 'preview-name',
         'input-title': 'preview-title',
@@ -14,8 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const skillsPreview = document.getElementById('preview-skills');
     const templateSelect = document.getElementById('template-select');
     const cvPreviewContainer = document.getElementById('cv-preview-container');
+    
+    const photoInput = document.getElementById('input-photo');
+    const previewPhoto = document.getElementById('preview-photo');
+    const photoPlaceholder = document.getElementById('photo-placeholder');
 
-    // 2. Load Data dari Local Storage
     const loadData = () => {
         Object.keys(fieldMapping).forEach(inputId => {
             const savedValue = localStorage.getItem(inputId);
@@ -31,14 +33,18 @@ document.addEventListener("DOMContentLoaded", () => {
             updateSkills(savedSkills);
         }
 
-        const savedTemplate = localStorage.getItem('cv-template');
+        const savedTemplate = localStorage.getItem('cv-layout-theme');
         if (savedTemplate) {
             templateSelect.value = savedTemplate;
             changeTemplate(savedTemplate);
         }
+
+        const savedPhoto = localStorage.getItem('cv-photo-data');
+        if (savedPhoto) {
+            setPhoto(savedPhoto);
+        }
     };
 
-    // 3. Update Text Preview
     const updatePreview = (inputId, value) => {
         const previewId = fieldMapping[inputId];
         const previewEl = document.getElementById(previewId);
@@ -48,38 +54,58 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             previewEl.innerText = value;
         }
-        // Simpan ke LocalStorage
         localStorage.setItem(inputId, value);
     };
 
-    // 4. Update Skills (Format List)
+    // Fungsi Render Keahlian sebagai Badge
     const updateSkills = (value) => {
         skillsPreview.innerHTML = '';
         if (value.trim() === '') {
-            skillsPreview.innerHTML = '<li>Keahlian Anda</li>';
+            skillsPreview.innerHTML = '<span class="cv-skill-badge">Keahlian Anda</span>';
         } else {
             const skillsArray = value.split(',');
             skillsArray.forEach(skill => {
                 if(skill.trim() !== '') {
-                    const li = document.createElement('li');
-                    li.innerText = skill.trim();
-                    skillsPreview.appendChild(li);
+                    const span = document.createElement('span');
+                    span.className = 'cv-skill-badge';
+                    span.innerText = skill.trim();
+                    skillsPreview.appendChild(span);
                 }
             });
         }
         localStorage.setItem('input-skills', value);
     };
 
-    // 5. Ubah Tema Template
-    const changeTemplate = (templateName) => {
-        // Hapus class template lama
-        cvPreviewContainer.classList.remove('cv-template-modern', 'cv-template-minimalist', 'cv-template-classic');
-        // Tambahkan class template baru
-        cvPreviewContainer.classList.add(`cv-template-${templateName}`);
-        localStorage.setItem('cv-template', templateName);
+    // Fungsi Mengganti Tata Letak (Layout Class)
+    const changeTemplate = (layoutClass) => {
+        // Reset seluruh class container, sisakan class wajib
+        cvPreviewContainer.className = `bg-white shadow-2xl cv-a4 ${layoutClass}`;
+        localStorage.setItem('cv-layout-theme', layoutClass);
     };
 
-    // 6. Event Listeners untuk Semua Input Teks
+    const setPhoto = (base64Data) => {
+        previewPhoto.src = base64Data;
+        previewPhoto.classList.remove('hidden');
+        photoPlaceholder.classList.add('hidden');
+    };
+
+    photoInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const base64String = event.target.result;
+                setPhoto(base64String);
+                try {
+                    localStorage.setItem('cv-photo-data', base64String);
+                } catch (err) {
+                    console.warn("Storage penuh, foto tidak tersimpan saat refresh.");
+                }
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
     document.querySelectorAll('.form-input').forEach(input => {
         input.addEventListener('input', (e) => {
             if (e.target.id === 'input-skills') {
@@ -90,12 +116,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Event Listener untuk Template
-    templateSelect.addEventListener('change', (e) => {
-        changeTemplate(e.target.value);
-    });
+    templateSelect.addEventListener('change', (e) => changeTemplate(e.target.value));
 
-    // Event Listener Hapus Data
     document.getElementById('btn-clear').addEventListener('click', () => {
         if(confirm("Anda yakin ingin menghapus semua data CV?")) {
             localStorage.clear();
@@ -103,27 +125,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 7. Ekspor ke PDF menggunakan html2pdf
     document.getElementById('btn-download').addEventListener('click', () => {
         const element = document.getElementById('cv-preview-container');
-        // Hapus efek transform scale saat rendering PDF agar ukurannya tidak rusak
         element.style.transform = "none"; 
 
         const opt = {
             margin:       0,
-            filename:     'CV_Professional.pdf',
+            filename:     'Curriculum_Vitae.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2, useCORS: true },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
-        // Render PDF
         html2pdf().set(opt).from(element).save().then(() => {
-            // Kembalikan efek CSS setelah diunduh (untuk mode mobile)
             element.style.transform = ""; 
         });
     });
 
-    // Inisialisasi awal
     loadData();
 });
