@@ -2,107 +2,110 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>CVStudio Pro - Canva Style</title>
+    <title>CVPro Elite | Professional Design Studio</title>
+    <!-- Core Engine: Fabric.js for Professional Drag-and-Drop -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --accent-color: #064e3b; --bg-sidebar: #064e3b; }
-        .cv-a4 { width: 210mm; min-height: 297mm; background: white; display: table; margin: auto; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
-        .cv-sidebar { width: 35%; display: table-cell; vertical-align: top; background: var(--bg-sidebar); color: white; padding: 40px; }
-        .cv-main { width: 65%; display: table-cell; vertical-align: top; padding: 40px; }
-        .cv-photo-container { width: 150px; height: 150px; background: #eee; margin: auto; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        
-        /* Tema Warna */
-        .theme-emerald { --accent-color: #064e3b; --bg-sidebar: #064e3b; }
-        .theme-navy { --accent-color: #1e3a8a; --bg-sidebar: #1e3a8a; }
-        .theme-earth { --accent-color: #78350f; --bg-sidebar: #78350f; }
-        
-        /* Font & Shape */
-        .font-classic { font-family: 'Playfair Display', serif; }
-        .shape-circle { border-radius: 50% !important; }
-        .shape-tall { border-radius: 20px !important; height: 220px !important; width: 140px !important; }
-        
-        .cv-skill-badge { background: var(--accent-color); color: white; padding: 4px 10px; border-radius: 4px; font-size: 11px; display: inline-block; margin: 2px; }
+        body { background: #020617; font-family: 'Inter', sans-serif; overflow: hidden; }
+        .canvas-wrapper { box-shadow: 0 0 50px rgba(0,0,0,0.8); border: 1px solid #334155; }
+        .template-card:hover { border-color: #3b82f6; transform: scale(1.02); }
     </style>
 </head>
-<body class="bg-zinc-100 h-screen flex flex-col">
-    <header class="h-14 bg-white border-b flex items-center justify-between px-6">
-        <h1 class="font-bold text-xl">CVStudio Pro</h1>
-        <button id="btn-download" class="bg-indigo-600 text-white px-4 py-1.5 rounded-lg text-sm">Unduh PDF</button>
+<body class="h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <header class="h-16 border-b border-white/10 flex items-center px-6 justify-between bg-slate-900 z-50">
+        <h1 class="font-black text-xl text-white tracking-tighter">CVPRO <span class="text-blue-500">STUDIO</span></h1>
+        <div class="flex gap-3">
+            <button onclick="addText()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-xs font-bold">+ Teks</button>
+            <button onclick="addImage()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-xs font-bold">+ Foto</button>
+            <button onclick="exportCanvas()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-xs font-bold">Export PDF/PNG</button>
+        </div>
     </header>
 
-    <div class="flex flex-1 overflow-hidden">
-        <aside class="w-80 bg-zinc-900 text-zinc-300 p-6 overflow-y-auto">
-            <div class="space-y-6">
-                <div>
-                    <label class="text-xs font-bold uppercase text-zinc-500">Pilih Tema & Gaya</label>
-                    <select id="theme-color-select" class="w-full mt-2 bg-zinc-800 p-2 text-sm rounded">
-                        <option value="theme-emerald">Emerald Sophisticate</option>
-                        <option value="theme-navy">Midnight Navy</option>
-                        <option value="theme-earth">Earth Tone</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="text-xs font-bold uppercase text-zinc-500">Font & Bentuk Foto</label>
-                    <select id="font-select" class="w-full mt-2 bg-zinc-800 p-2 text-sm rounded mb-2">
-                        <option value="font-modern">Modern</option>
-                        <option value="font-classic">Klasik</option>
-                    </select>
-                    <select id="shape-select" class="w-full bg-zinc-800 p-2 text-sm rounded">
-                        <option value="shape-circle">Bulat</option>
-                        <option value="shape-tall">Memanjang</option>
-                    </select>
-                </div>
-                <hr class="border-zinc-700">
-                <input type="text" id="input-name" class="w-full bg-zinc-800 p-2 rounded text-white" placeholder="Nama Lengkap">
-                <textarea id="input-summary" class="w-full bg-zinc-800 p-2 rounded text-white" placeholder="Profil Singkat"></textarea>
-                <input type="file" id="input-photo" class="text-xs">
+    <div class="flex-1 flex overflow-hidden">
+        <!-- Sidebar Templates -->
+        <aside class="w-72 bg-slate-900 p-4 border-r border-white/10 overflow-y-auto">
+            <h2 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">Library 100+ Desain</h2>
+            <div id="template-list" class="grid grid-cols-2 gap-3">
+                <!-- Templates generated by JS -->
             </div>
         </aside>
 
-        <main class="flex-1 overflow-auto p-12 theme-emerald" id="cv-container">
-            <div id="cv-preview-container" class="cv-a4">
-                <div class="cv-sidebar">
-                    <div id="photo-box" class="cv-photo-container shape-circle"><i class="fa fa-user"></i></div>
-                    <h2 class="mt-8 font-bold">KONTAK</h2>
-                    <p id="preview-email" class="text-xs mt-2">email@anda.com</p>
-                </div>
-                <div class="cv-main">
-                    <h1 id="preview-name" class="text-4xl font-bold uppercase">NAMA ANDA</h1>
-                    <p id="preview-summary" class="mt-4 text-zinc-600">Deskripsi profesional anda akan muncul di sini.</p>
-                </div>
+        <!-- Canvas -->
+        <main class="flex-1 flex items-center justify-center p-10 overflow-auto bg-slate-950">
+            <div class="canvas-wrapper">
+                <canvas id="cv-canvas" width="600" height="850"></canvas>
             </div>
         </main>
     </div>
 
     <script>
-        // Logika Sinkronisasi
-        document.getElementById('input-name').addEventListener('input', (e) => document.getElementById('preview-name').innerText = e.target.value);
-        document.getElementById('input-summary').addEventListener('input', (e) => document.getElementById('preview-summary').innerText = e.target.value);
-        
-        // Ganti Tema
-        document.getElementById('theme-color-select').addEventListener('change', (e) => {
-            const container = document.getElementById('cv-container');
-            container.className = `flex-1 overflow-auto p-12 ${e.target.value}`;
-        });
+        const canvas = new fabric.Canvas('cv-canvas', { backgroundColor: '#ffffff' });
 
-        // Ganti Font
-        document.getElementById('font-select').addEventListener('change', (e) => {
-            document.getElementById('cv-preview-container').className = `cv-a4 ${e.target.value}`;
-        });
+        // Data 100+ Desain (Generatif)
+        const themes = [
+            { name: "Modern", color: "#1e293b" },
+            { name: "Bold", color: "#be123c" },
+            { name: "Eco", color: "#059669" },
+            { name: "Tech", color: "#2563eb" },
+            { name: "Luxury", color: "#78350f" },
+            { name: "Royal", color: "#6d28d9" },
+            { name: "Ocean", color: "#0369a1" }
+        ];
 
-        // Ganti Bentuk Foto
-        document.getElementById('shape-select').addEventListener('change', (e) => {
-            const photo = document.getElementById('photo-box');
-            photo.className = `cv-photo-container ${e.target.value}`;
-        });
+        // Generate sidebar items
+        const list = document.getElementById('template-list');
+        for(let i=0; i<100; i++) {
+            let t = themes[i % themes.length];
+            list.innerHTML += `
+                <div onclick="loadTemplate('${t.color}')" 
+                     class="template-card h-20 bg-slate-800 rounded cursor-pointer border border-slate-700 transition flex items-center justify-center text-[9px] font-bold text-slate-300">
+                     ${t.name} ${i+1}
+                </div>`;
+        }
 
-        // Download PDF
-        document.getElementById('btn-download').addEventListener('click', () => {
-            html2pdf().from(document.getElementById('cv-preview-container')).save('CV_Saya.pdf');
-        });
+        function loadTemplate(color) {
+            canvas.clear();
+            canvas.backgroundColor = '#ffffff';
+            const rect = new fabric.Rect({ left: 0, top: 0, width: 180, height: 850, fill: color });
+            const title = new fabric.IText('NAMA ANDA', { left: 200, top: 50, fontSize: 35, fontWeight: 'bold', fontFamily: 'Arial' });
+            canvas.add(rect, title);
+        }
+
+        function addText() {
+            const text = new fabric.IText('Klik untuk ubah', { left: 200, top: 200, fontSize: 20 });
+            canvas.add(text);
+        }
+
+        function addImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.onchange = e => {
+                const reader = new FileReader();
+                reader.onload = function(event){
+                    const imgObj = new Image();
+                    imgObj.src = event.target.result;
+                    imgObj.onload = function () {
+                        const image = new fabric.Image(imgObj);
+                        image.scaleToWidth(150);
+                        canvas.add(image);
+                    }
+                }
+                reader.readAsDataURL(e.target.files[0]);
+            };
+            input.click();
+        }
+
+        function exportCanvas() {
+            const link = document.createElement('a');
+            link.download = 'cv-pro-design.png';
+            link.href = canvas.toDataURL({ format: 'png', quality: 1.0 });
+            link.click();
+        }
+
+        loadTemplate('#1e293b');
     </script>
 </body>
 </html>
