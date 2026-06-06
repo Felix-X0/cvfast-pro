@@ -2,193 +2,107 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CVFast Canva Studio</title>
+    <title>CVStudio Pro - Canva Style</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root { --accent-color: #064e3b; --bg-sidebar: #064e3b; }
+        .cv-a4 { width: 210mm; min-height: 297mm; background: white; display: table; margin: auto; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        .cv-sidebar { width: 35%; display: table-cell; vertical-align: top; background: var(--bg-sidebar); color: white; padding: 40px; }
+        .cv-main { width: 65%; display: table-cell; vertical-align: top; padding: 40px; }
+        .cv-photo-container { width: 150px; height: 150px; background: #eee; margin: auto; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        
+        /* Tema Warna */
+        .theme-emerald { --accent-color: #064e3b; --bg-sidebar: #064e3b; }
+        .theme-navy { --accent-color: #1e3a8a; --bg-sidebar: #1e3a8a; }
+        .theme-earth { --accent-color: #78350f; --bg-sidebar: #78350f; }
+        
+        /* Font & Shape */
+        .font-classic { font-family: 'Playfair Display', serif; }
+        .shape-circle { border-radius: 50% !important; }
+        .shape-tall { border-radius: 20px !important; height: 220px !important; width: 140px !important; }
+        
+        .cv-skill-badge { background: var(--accent-color); color: white; padding: 4px 10px; border-radius: 4px; font-size: 11px; display: inline-block; margin: 2px; }
+    </style>
 </head>
-<body class="bg-zinc-100 text-zinc-900 font-sans antialiased h-screen flex flex-col overflow-hidden">
-
-    <header class="h-14 bg-white border-b border-zinc-200 flex items-center justify-between px-6 z-50 shrink-0 shadow-sm">
-        <div class="flex items-center gap-3">
-            <div class="bg-indigo-600 text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold text-lg shadow-md">CV</div>
-            <span class="font-bold text-lg tracking-tight">ProStudio <span class="text-indigo-600 font-normal text-xs bg-indigo-50 px-2 py-1 rounded-full ml-1">V2.0</span></span>
-        </div>
-        <div class="flex items-center gap-2">
-            <input type="text" id="project-title" class="bg-zinc-50 hover:bg-zinc-100 focus:bg-white border focus:border-indigo-300 rounded px-3 py-1 text-sm font-medium text-center w-64 transition" value="Curriculum Vitae Saya">
-            <span class="text-xs text-zinc-400">.pdf</span>
-        </div>
-        <div class="flex items-center gap-3">
-            <button id="btn-clear" class="text-sm font-medium text-red-500 hover:bg-red-50 px-3 py-1.5 rounded transition"><i class="fa-solid fa-rotate-right mr-1"></i> Reset</button>
-            <button id="btn-download" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm py-2 px-4 rounded-lg shadow-lg flex items-center gap-2 transition">
-                <i class="fa-solid fa-file-pdf"></i> Unduh PDF
-            </button>
-        </div>
+<body class="bg-zinc-100 h-screen flex flex-col">
+    <header class="h-14 bg-white border-b flex items-center justify-between px-6">
+        <h1 class="font-bold text-xl">CVStudio Pro</h1>
+        <button id="btn-download" class="bg-indigo-600 text-white px-4 py-1.5 rounded-lg text-sm">Unduh PDF</button>
     </header>
 
     <div class="flex flex-1 overflow-hidden">
-        
-        <aside class="w-[340px] bg-zinc-900 text-zinc-300 flex flex-col border-r border-zinc-800 overflow-y-auto shrink-0 custom-scrollbar pb-10">
-            
-            <div class="p-4 border-b border-zinc-800 bg-zinc-950 sticky top-0 z-10">
-                <p class="text-xs font-bold text-zinc-500 uppercase tracking-widest text-center">Panel Desain</p>
-            </div>
-
-            <div class="p-5 border-b border-zinc-800">
-                <label class="block text-xs font-bold uppercase tracking-wider text-indigo-400 mb-3"><i class="fa-solid fa-wand-magic-sparkles"></i> 1. Gaya Visual</label>
-                
-                <div class="grid grid-cols-2 gap-2 mb-4" id="template-grid-picker">
-                    <div data-template="cv-theme-navy" class="template-card active border-2 border-indigo-500 bg-zinc-800 p-2 rounded-lg cursor-pointer text-center hover:bg-zinc-700 transition">
-                        <div class="h-10 bg-slate-900 rounded mb-1 border border-zinc-600"></div>
-                        <p class="text-[10px] font-bold text-white">Navy Striking</p>
-                    </div>
-                    <div data-template="cv-theme-emerald" class="template-card border-2 border-transparent bg-zinc-800 p-2 rounded-lg cursor-pointer text-center hover:bg-zinc-700 transition">
-                        <div class="h-10 bg-teal-800 rounded mb-1 border border-zinc-600"></div>
-                        <p class="text-[10px] font-bold text-white">Emerald Pro</p>
-                    </div>
-                    <div data-template="cv-theme-minimal" class="template-card border-2 border-transparent bg-zinc-800 p-2 rounded-lg cursor-pointer text-center hover:bg-zinc-700 transition">
-                        <div class="h-10 bg-[#e5e0d8] rounded mb-1 border border-zinc-600"></div>
-                        <p class="text-[10px] font-bold text-white">Beige Minimal</p>
-                    </div>
-                    <div data-template="cv-theme-corporate" class="template-card border-2 border-transparent bg-zinc-800 p-2 rounded-lg cursor-pointer text-center hover:bg-zinc-700 transition">
-                        <div class="h-10 bg-zinc-200 rounded mb-1 border border-zinc-600"></div>
-                        <p class="text-[10px] font-bold text-white">Clean Corp</p>
-                    </div>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-[11px] text-zinc-400 mb-1">Gaya Huruf (Font)</label>
-                    <select id="font-select" class="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-2 text-sm text-white focus:border-indigo-500 outline-none">
-                        <option value="font-inter">Inter (Modern, Bersih)</option>
-                        <option value="font-poppins">Poppins (Geometris, Elegan)</option>
-                        <option value="font-playfair">Playfair Display (Klasik, Serif)</option>
-                        <option value="font-lora">Lora (Elegan, Profesional)</option>
+        <aside class="w-80 bg-zinc-900 text-zinc-300 p-6 overflow-y-auto">
+            <div class="space-y-6">
+                <div>
+                    <label class="text-xs font-bold uppercase text-zinc-500">Pilih Tema & Gaya</label>
+                    <select id="theme-color-select" class="w-full mt-2 bg-zinc-800 p-2 text-sm rounded">
+                        <option value="theme-emerald">Emerald Sophisticate</option>
+                        <option value="theme-navy">Midnight Navy</option>
+                        <option value="theme-earth">Earth Tone</option>
                     </select>
                 </div>
-
                 <div>
-                    <label class="block text-[11px] text-zinc-400 mb-1">Bentuk Foto Profil</label>
-                    <div class="flex bg-zinc-800 rounded-lg p-1 border border-zinc-700">
-                        <button data-shape="shape-circle" class="shape-btn active flex-1 text-xs py-1.5 rounded bg-zinc-600 text-white transition"><i class="fa-solid fa-circle"></i> Bulat</button>
-                        <button data-shape="shape-square" class="shape-btn flex-1 text-xs py-1.5 rounded text-zinc-400 hover:text-white transition"><i class="fa-solid fa-square"></i> Kotak</button>
-                        <button data-shape="shape-portrait" class="shape-btn flex-1 text-xs py-1.5 rounded text-zinc-400 hover:text-white transition"><i class="fa-solid fa-image"></i> Memanjang</button>
-                    </div>
+                    <label class="text-xs font-bold uppercase text-zinc-500">Font & Bentuk Foto</label>
+                    <select id="font-select" class="w-full mt-2 bg-zinc-800 p-2 text-sm rounded mb-2">
+                        <option value="font-modern">Modern</option>
+                        <option value="font-classic">Klasik</option>
+                    </select>
+                    <select id="shape-select" class="w-full bg-zinc-800 p-2 text-sm rounded">
+                        <option value="shape-circle">Bulat</option>
+                        <option value="shape-tall">Memanjang</option>
+                    </select>
                 </div>
-            </div>
-
-            <div class="p-5 border-b border-zinc-800">
-                <label class="block text-xs font-bold uppercase tracking-wider text-indigo-400 mb-2"><i class="fa-solid fa-camera"></i> 2. Foto</label>
-                <div class="relative group border-2 border-dashed border-zinc-600 hover:border-indigo-500 rounded-xl p-4 text-center cursor-pointer transition bg-zinc-800/50">
-                    <input type="file" id="input-photo" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                    <i class="fa-solid fa-cloud-arrow-up text-xl text-zinc-400 group-hover:text-indigo-400 mb-1 block transition"></i>
-                    <span class="text-xs font-medium text-zinc-300 block">Pilih Foto Profil Baru</span>
-                </div>
-            </div>
-
-            <div class="p-5 space-y-4">
-                <label class="block text-xs font-bold uppercase tracking-wider text-indigo-400"><i class="fa-solid fa-pen-to-square"></i> 3. Isi Data</label>
-                
-                <div>
-                    <label class="block text-xs text-zinc-400 mb-1">Nama Lengkap</label>
-                    <input type="text" id="input-name" class="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-2 text-sm text-white focus:border-indigo-500 outline-none form-input" placeholder="Mohamad Raya Saputra">
-                </div>
-                <div>
-                    <label class="block text-xs text-zinc-400 mb-1">Posisi / Jabatan</label>
-                    <input type="text" id="input-title" class="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-2 text-sm text-white focus:border-indigo-500 outline-none form-input" placeholder="Graphic Designer">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-xs text-zinc-400 mb-1">Email</label>
-                        <input type="email" id="input-email" class="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-2 text-xs text-white focus:border-indigo-500 outline-none form-input" placeholder="email@domain.com">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-zinc-400 mb-1">Telepon</label>
-                        <input type="text" id="input-phone" class="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-2 text-xs text-white focus:border-indigo-500 outline-none form-input" placeholder="08123456789">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs text-zinc-400 mb-1">Profil Singkat</label>
-                    <textarea id="input-summary" rows="3" class="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-2 text-xs text-white focus:border-indigo-500 outline-none form-input" placeholder="Deskripsi singkat tentang profesionalitas Anda..."></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs text-zinc-400 mb-1">Pengalaman Kerja</label>
-                    <textarea id="input-experience" rows="4" class="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-2 text-xs text-white focus:border-indigo-500 outline-none form-input" placeholder="2020 - Sekarang | Perusahaan X | Desainer&#10;• Membuat desain visual."></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs text-zinc-400 mb-1">Pendidikan</label>
-                    <textarea id="input-education" rows="3" class="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-2 text-xs text-white focus:border-indigo-500 outline-none form-input" placeholder="2016 - 2020 | Universitas B | S1 Desain"></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs text-zinc-400 mb-1">Keahlian (Koma)</label>
-                    <input type="text" id="input-skills" class="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-2 text-xs text-white focus:border-indigo-500 outline-none form-input" placeholder="Photoshop, Illustrator, Figma">
-                </div>
+                <hr class="border-zinc-700">
+                <input type="text" id="input-name" class="w-full bg-zinc-800 p-2 rounded text-white" placeholder="Nama Lengkap">
+                <textarea id="input-summary" class="w-full bg-zinc-800 p-2 rounded text-white" placeholder="Profil Singkat"></textarea>
+                <input type="file" id="input-photo" class="text-xs">
             </div>
         </aside>
 
-        <main class="flex-1 bg-zinc-300 overflow-auto p-12 flex justify-center items-start custom-scrollbar">
-            
-            <div id="cv-preview-container" class="bg-white shadow-2xl cv-a4 cv-theme-navy font-inter shape-circle table relative">
-                
-                <div class="cv-sidebar flex flex-col p-8 z-10 relative">
-                    <div class="cv-photo-wrapper flex justify-center mb-8 relative z-20">
-                        <div id="cv-photo-element" class="cv-photo-inner overflow-hidden bg-zinc-200 flex items-center justify-center shadow-lg transition-all duration-300">
-                            <img id="preview-photo" src="" alt="Profil" class="w-full h-full object-cover hidden">
-                            <i id="photo-placeholder" class="fa-solid fa-user text-5xl text-zinc-400"></i>
-                        </div>
-                    </div>
-
-                    <div class="mb-8 cv-section">
-                        <h3 class="cv-heading mb-4">Kontak</h3>
-                        <div class="space-y-3">
-                            <p class="flex items-center gap-3 text-sm"><span class="cv-icon"><i class="fa-solid fa-phone"></i></span> <span id="preview-phone">08123456789</span></p>
-                            <p class="flex items-center gap-3 text-sm"><span class="cv-icon"><i class="fa-solid fa-envelope"></i></span> <span id="preview-email" class="break-all">email@domain.com</span></p>
-                        </div>
-                    </div>
-
-                    <div class="mb-8 cv-section">
-                        <h3 class="cv-heading mb-4">Pendidikan</h3>
-                        <div id="preview-education" class="text-sm leading-relaxed whitespace-pre-line cv-text-dim">
-                            Riwayat pendidikan.
-                        </div>
-                    </div>
-
-                    <div class="cv-section">
-                        <h3 class="cv-heading mb-4">Kemampuan</h3>
-                        <div id="preview-skills" class="flex flex-col gap-2 text-sm font-medium">
-                            <span>Keahlian Anda</span>
-                        </div>
-                    </div>
+        <main class="flex-1 overflow-auto p-12 theme-emerald" id="cv-container">
+            <div id="cv-preview-container" class="cv-a4">
+                <div class="cv-sidebar">
+                    <div id="photo-box" class="cv-photo-container shape-circle"><i class="fa fa-user"></i></div>
+                    <h2 class="mt-8 font-bold">KONTAK</h2>
+                    <p id="preview-email" class="text-xs mt-2">email@anda.com</p>
                 </div>
-
-                <div class="cv-main p-10 flex flex-col z-0 relative">
-                    
-                    <div class="cv-header-area mb-8 pt-4">
-                        <h1 id="preview-name" class="text-5xl font-bold uppercase leading-none mb-3 tracking-wide">NAMA ANDA</h1>
-                        <h2 id="preview-title" class="text-xl font-medium tracking-widest uppercase cv-title-color">Posisi Pekerjaan</h2>
-                    </div>
-
-                    <div class="mb-8">
-                        <h3 class="cv-main-heading mb-4">Profil</h3>
-                        <p id="preview-summary" class="text-sm leading-relaxed whitespace-pre-line text-justify cv-text-main">
-                            Tuliskan ringkasan profesional Anda di sini.
-                        </p>
-                    </div>
-
-                    <div class="mb-8">
-                        <h3 class="cv-main-heading mb-4">Pengalaman Kerja</h3>
-                        <div id="preview-experience" class="text-sm leading-relaxed whitespace-pre-line cv-text-main pl-4 border-l-2 cv-timeline">
-                            Daftar riwayat pengalaman kerja Anda.
-                        </div>
-                    </div>
-
+                <div class="cv-main">
+                    <h1 id="preview-name" class="text-4xl font-bold uppercase">NAMA ANDA</h1>
+                    <p id="preview-summary" class="mt-4 text-zinc-600">Deskripsi profesional anda akan muncul di sini.</p>
                 </div>
             </div>
         </main>
     </div>
 
-    <script src="js/app.js"></script>
+    <script>
+        // Logika Sinkronisasi
+        document.getElementById('input-name').addEventListener('input', (e) => document.getElementById('preview-name').innerText = e.target.value);
+        document.getElementById('input-summary').addEventListener('input', (e) => document.getElementById('preview-summary').innerText = e.target.value);
+        
+        // Ganti Tema
+        document.getElementById('theme-color-select').addEventListener('change', (e) => {
+            const container = document.getElementById('cv-container');
+            container.className = `flex-1 overflow-auto p-12 ${e.target.value}`;
+        });
+
+        // Ganti Font
+        document.getElementById('font-select').addEventListener('change', (e) => {
+            document.getElementById('cv-preview-container').className = `cv-a4 ${e.target.value}`;
+        });
+
+        // Ganti Bentuk Foto
+        document.getElementById('shape-select').addEventListener('change', (e) => {
+            const photo = document.getElementById('photo-box');
+            photo.className = `cv-photo-container ${e.target.value}`;
+        });
+
+        // Download PDF
+        document.getElementById('btn-download').addEventListener('click', () => {
+            html2pdf().from(document.getElementById('cv-preview-container')).save('CV_Saya.pdf');
+        });
+    </script>
 </body>
 </html>
