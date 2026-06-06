@@ -31,6 +31,61 @@ body { background-color: var(--app-bg); color: var(--app-text); }
 .highlight { color: var(--app-primary); }
 .hero p { font-size: 1.1rem; color: #475569; line-height: 1.8; margin-bottom: 30px; }
 
+/* --- CSS BARU UNTUK TOMBOL DUKUNGAN (SOCIABUZZ & IG) --- */
+.creator-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+.btn-donate {
+    background: #f59e0b; /* Warna Emas/Kopi */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+}
+.btn-donate:hover { background: #d97706; transform: translateY(-2px); }
+
+.btn-ig {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(220, 39, 67, 0.3);
+}
+.btn-ig:hover { transform: translateY(-2px); }
+
+.sidebar-support {
+    margin-top: 30px;
+    padding: 15px;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    text-align: center;
+}
+.sidebar-support p {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-bottom: 10px;
+}
+
 /* --- EDITOR PAGE --- */
 .editor-nav { display: flex; justify-content: space-between; padding: 15px 3%; background: white; border-bottom: 1px solid var(--app-border); }
 .editor-container { display: flex; height: calc(100vh - 70px); }
@@ -57,7 +112,6 @@ body { background-color: var(--app-bg); color: var(--app-text); }
 .theme-purple { --cv-color: #7c3aed; --cv-text-light: #f5f3ff; }
 
 /* --- SISTEM LAYOUT --- */
-
 /* 1. Layout Sidebar (Modern) */
 .layout-sidebar { display: flex; }
 .layout-sidebar .cv-left { width: 35%; background: var(--cv-color); color: var(--cv-text-light); padding: 40px 30px; }
