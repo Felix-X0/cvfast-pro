@@ -20,7 +20,7 @@ body { background-color: var(--app-bg); color: var(--app-text); }
 .btn-secondary:hover { background: #e2e8f0; }
 .btn-large { font-size: 1.1rem; padding: 15px 35px; margin-top: 20px; display: inline-block; text-decoration: none; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);}
 
-/* --- LANDING PAGE Keren --- */
+/* --- LANDING PAGE --- */
 .navbar { display: flex; justify-content: space-between; padding: 20px 5%; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 .logo { font-size: 1.5rem; color: var(--app-text); }
 .logo strong { color: var(--app-primary); }
