@@ -1,146 +1,101 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const fieldMapping = {
-        'input-name': 'preview-name',
-        'input-title': 'preview-title',
-        'input-email': 'preview-email',
-        'input-phone': 'preview-phone',
-        'input-summary': 'preview-summary',
-        'input-experience': 'preview-experience',
-        'input-education': 'preview-education'
+document.addEventListener('DOMContentLoaded', () => {
+    // Definisi Elemen DOM
+    const inputs = {
+        name: document.getElementById('nameInput'),
+        title: document.getElementById('titleInput'),
+        about: document.getElementById('aboutInput'),
+        photo: document.getElementById('photoInput'),
+        shape: document.getElementById('photoShape'),
+        template: document.getElementById('templateSelect')
     };
 
-    const skillsInput = document.getElementById('input-skills');
-    const skillsPreview = document.getElementById('preview-skills');
-    const templateSelect = document.getElementById('template-select');
-    const cvPreviewContainer = document.getElementById('cv-preview-container');
-    
-    const photoInput = document.getElementById('input-photo');
-    const previewPhoto = document.getElementById('preview-photo');
-    const photoPlaceholder = document.getElementById('photo-placeholder');
-
-    const loadData = () => {
-        Object.keys(fieldMapping).forEach(inputId => {
-            const savedValue = localStorage.getItem(inputId);
-            if (savedValue) {
-                document.getElementById(inputId).value = savedValue;
-                updatePreview(inputId, savedValue);
-            }
-        });
-
-        const savedSkills = localStorage.getItem('input-skills');
-        if (savedSkills) {
-            skillsInput.value = savedSkills;
-            updateSkills(savedSkills);
-        }
-
-        const savedTemplate = localStorage.getItem('cv-layout-theme');
-        if (savedTemplate) {
-            templateSelect.value = savedTemplate;
-            changeTemplate(savedTemplate);
-        }
-
-        const savedPhoto = localStorage.getItem('cv-photo-data');
-        if (savedPhoto) {
-            setPhoto(savedPhoto);
-        }
+    const previews = {
+        name: document.getElementById('cvName'),
+        title: document.getElementById('cvTitle'),
+        about: document.getElementById('cvAbout'),
+        photo: document.getElementById('cvPhoto'),
+        paper: document.getElementById('cvPreview')
     };
 
-    const updatePreview = (inputId, value) => {
-        const previewId = fieldMapping[inputId];
-        const previewEl = document.getElementById(previewId);
+    // 1. Fungsi Update Live Preview
+    const updatePreview = () => {
+        previews.name.innerText = inputs.name.value || 'Nama Anda';
+        previews.title.innerText = inputs.title.value || 'Profesi Anda';
+        previews.about.innerText = inputs.about.value || 'Deskripsi profil Anda akan muncul di sini.';
         
-        if (value.trim() === '') {
-            previewEl.innerText = document.getElementById(inputId).getAttribute('placeholder') || '-';
-        } else {
-            previewEl.innerText = value;
-        }
-        localStorage.setItem(inputId, value);
+        // Ubah Template
+        previews.paper.className = `a4-paper ${inputs.template.value}`;
+        
+        // Ubah Bentuk Foto
+        previews.photo.className = inputs.shape.value === 'round' ? 'photo-round' : 'photo-square';
     };
 
-    // Fungsi Render Keahlian sebagai Badge
-    const updateSkills = (value) => {
-        skillsPreview.innerHTML = '';
-        if (value.trim() === '') {
-            skillsPreview.innerHTML = '<span class="cv-skill-badge">Keahlian Anda</span>';
-        } else {
-            const skillsArray = value.split(',');
-            skillsArray.forEach(skill => {
-                if(skill.trim() !== '') {
-                    const span = document.createElement('span');
-                    span.className = 'cv-skill-badge';
-                    span.innerText = skill.trim();
-                    skillsPreview.appendChild(span);
-                }
-            });
-        }
-        localStorage.setItem('input-skills', value);
-    };
+    // 2. Event Listeners untuk Input Text & Select
+    ['name', 'title', 'about', 'shape', 'template'].forEach(key => {
+        inputs[key].addEventListener('input', updatePreview);
+    });
 
-    // Fungsi Mengganti Tata Letak (Layout Class)
-    const changeTemplate = (layoutClass) => {
-        // Reset seluruh class container, sisakan class wajib
-        cvPreviewContainer.className = `bg-white shadow-2xl cv-a4 ${layoutClass}`;
-        localStorage.setItem('cv-layout-theme', layoutClass);
-    };
-
-    const setPhoto = (base64Data) => {
-        previewPhoto.src = base64Data;
-        previewPhoto.classList.remove('hidden');
-        photoPlaceholder.classList.add('hidden');
-    };
-
-    photoInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
+    // 3. Upload & Tampil Foto (Ubah File ke Base64)
+    inputs.photo.addEventListener('change', function() {
+        const file = this.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = function(event) {
-                const base64String = event.target.result;
-                setPhoto(base64String);
-                try {
-                    localStorage.setItem('cv-photo-data', base64String);
-                } catch (err) {
-                    console.warn("Storage penuh, foto tidak tersimpan saat refresh.");
-                }
+            reader.onload = function(e) {
+                previews.photo.src = e.target.result;
+                previews.photo.style.display = 'block';
+                // Simpan foto ke Local Storage (Opsional, awas limit size)
+                localStorage.setItem('cv_photo', e.target.result);
             }
             reader.readAsDataURL(file);
         }
     });
 
-    document.querySelectorAll('.form-input').forEach(input => {
-        input.addEventListener('input', (e) => {
-            if (e.target.id === 'input-skills') {
-                updateSkills(e.target.value);
-            } else {
-                updatePreview(e.target.id, e.target.value);
-            }
-        });
+    // 4. Fitur Simpan Lokal (Local Storage)
+    document.getElementById('saveBtn').addEventListener('click', () => {
+        const cvData = {
+            name: inputs.name.value,
+            title: inputs.title.value,
+            about: inputs.about.value,
+            shape: inputs.shape.value,
+            template: inputs.template.value
+        };
+        localStorage.setItem('cv_data', JSON.stringify(cvData));
+        alert('Data CV berhasil disimpan di perangkat Anda!');
     });
 
-    templateSelect.addEventListener('change', (e) => changeTemplate(e.target.value));
-
-    document.getElementById('btn-clear').addEventListener('click', () => {
-        if(confirm("Anda yakin ingin menghapus semua data CV?")) {
-            localStorage.clear();
-            location.reload();
+    // Load Data dari Local Storage saat Web dibuka
+    const loadData = () => {
+        const savedData = JSON.parse(localStorage.getItem('cv_data'));
+        if (savedData) {
+            inputs.name.value = savedData.name || '';
+            inputs.title.value = savedData.title || '';
+            inputs.about.value = savedData.about || '';
+            inputs.shape.value = savedData.shape || 'round';
+            inputs.template.value = savedData.template || 'template-modern';
         }
-    });
+        const savedPhoto = localStorage.getItem('cv_photo');
+        if (savedPhoto) {
+            previews.photo.src = savedPhoto;
+            previews.photo.style.display = 'block';
+        }
+        updatePreview();
+    };
 
-    document.getElementById('btn-download').addEventListener('click', () => {
-        const element = document.getElementById('cv-preview-container');
-        element.style.transform = "none"; 
-
+    // 5. Fitur Export PDF menggunakan html2pdf
+    document.getElementById('exportPdfBtn').addEventListener('click', () => {
+        const element = document.getElementById('cvPreview');
         const opt = {
             margin:       0,
-            filename:     'Curriculum_Vitae.pdf',
+            filename:     `${inputs.name.value || 'CV'}_CVFastPro.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2, useCORS: true },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
-        html2pdf().set(opt).from(element).save().then(() => {
-            element.style.transform = ""; 
-        });
+        // Mulai Proses PDF
+        html2pdf().set(opt).from(element).save();
     });
 
+    // Inisialisasi awal
     loadData();
 });
