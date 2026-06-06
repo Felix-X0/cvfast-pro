@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editor Premium - CVFast Pro</title>
+    <title>Ultimate Editor - CVFast Pro</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body class="editor-page">
@@ -21,14 +21,19 @@
     <div class="editor-container">
         <aside class="form-section">
             <div class="control-panel">
-                <h3>🎨 Pengaturan Desain</h3>
+                <h3>🎨 Pengaturan Desain Utama</h3>
                 <div class="input-row">
                     <div class="input-group">
-                        <label>Pilih Layout</label>
+                        <label>Pilih Tataletak (Layout)</label>
                         <select id="layoutSelect">
-                            <option value="layout-sidebar">Amelia Blue (Modern Sidebar)</option>
-                            <option value="layout-header">Creative Header (Warna Atas)</option>
-                            <option value="layout-minimalist">Corporate Minimalist (ATS Friendly)</option>
+                            <option value="layout-modern-pro">Gaya 1: Modern Pro (1 Kolom)</option>
+                            <option value="layout-sidebar">Gaya 2: Sidebar Kontras (2 Kolom)</option>
+                            <option value="layout-executive-single">Gaya 3: Executive Single (Elegan)</option>
+                            <option value="layout-serif-elegant">Gaya 4: Serif Elegant (Klasik)</option>
+                            <option value="layout-creative-grid">Gaya 5: Creative Grid (Kotak Modern)</option>
+                            <option value="layout-photo-centric">Gaya 6: Photo Centric (Fokus Foto)</option>
+                            <option value="layout-header">Gaya 7: Creative Header (Blok Warna Atas)</option>
+                            <option value="layout-minimalist">Gaya 8: Corporate Minimalist (ATS)</option>
                         </select>
                     </div>
                     <div class="input-group">
@@ -44,9 +49,9 @@
             </div>
 
             <div class="form-block">
-                <h3>Data Diri</h3>
+                <h3>Data Diri & Kontak</h3>
                 <div class="input-group">
-                    <label>Foto Profil</label>
+                    <label>Foto Profil (Wajib diisi untuk layout gaya foto)</label>
                     <input type="file" id="photoInput" accept="image/*">
                 </div>
                 <div class="input-group">
@@ -60,10 +65,10 @@
                 
                 <div class="input-group">
                     <label style="display: flex; justify-content: space-between; align-items: center;">
-                        <span>Tentang Saya</span>
+                        <span>Tentang Saya (Ringkasan Profil)</span>
                         <button id="aiBtn" class="btn-ai">✨ Buat dengan AI</button>
                     </label>
-                    <textarea id="aboutInput" rows="4" placeholder="Ceritakan ringkasan karier Anda atau klik tombol AI..."></textarea>
+                    <textarea id="aboutInput" rows="4" placeholder="Ceritakan riwayat karier Anda..."></textarea>
                 </div>
 
                 <div class="input-row">
@@ -71,86 +76,103 @@
                     <div class="input-group"><label>Telepon</label><input type="text" id="phoneInput" placeholder="0812-xxxx-xxxx"></div>
                 </div>
                 <div class="input-row">
-                    <div class="input-group"><label>Lokasi</label><input type="text" id="addressInput" placeholder="Jakarta, Indonesia"></div>
-                    <div class="input-group"><label>LinkedIn / Portofolio</label><input type="text" id="linkInput" placeholder="linkedin.com/in/username"></div>
+                    <div class="input-group"><label>Lokasi (Kota, Negara)</label><input type="text" id="addressInput" placeholder="Jakarta, Indonesia"></div>
+                    <div class="input-group"><label>LinkedIn / Portofolio / Tautan Link</label><input type="text" id="linkInput" placeholder="linkedin.com/in/username"></div>
                 </div>
             </div>
 
             <div class="form-block">
-                <h3>Riwayat & Kompetensi</h3>
+                <h3>Riwayat & Keahlian</h3>
                 <div class="input-row">
-                    <div class="input-group"><label>Nama Perusahaan / Posisi</label><input type="text" id="expTitle" placeholder="Software Engineer - PT Teknologi"></div>
-                    <div class="input-group"><label>Periode Kerja</label><input type="text" id="expDate" placeholder="2022 - Sekarang"></div>
+                    <div class="input-group"><label>Posisi & Perusahaan</label><input type="text" id="expTitle" placeholder="Software Engineer - PT Tech"></div>
+                    <div class="input-group"><label>Tahun Bekerja</label><input type="text" id="expDate" placeholder="2022 - Sekarang"></div>
                 </div>
                 <div class="input-group">
-                    <label>Deskripsi Pengalaman Pekerjaan (Gunakan koma untuk baris baru)</label>
-                    <textarea id="expDesc" rows="3" placeholder="Mengembangkan sistem aplikasi, Memimpin tim beranggotakan 5 orang"></textarea>
+                    <label>Deskripsi Pengalaman Kerja (Pisahkan koma untuk baris baru)</label>
+                    <textarea id="expDesc" rows="3" placeholder="Mengembangkan sistem aplikasi, Memimpin tim engineering"></textarea>
                 </div>
                 <div class="input-row">
-                    <div class="input-group"><label>Nama Kampus / Sekolah</label><input type="text" id="eduTitle" placeholder="S1 Ilmu Komputer - Universitas Indonesia"></div>
-                    <div class="input-group"><label>Periode Pendidikan</label><input type="text" id="eduDate" placeholder="2018 - 2022"></div>
+                    <div class="input-group"><label>Gelar & Universitas / Sekolah</label><input type="text" id="eduTitle" placeholder="S1 Ilmu Komputer - Universitas"></div>
+                    <div class="input-group"><label>Tahun Lulus</label><input type="text" id="eduDate" placeholder="2018 - 2022"></div>
                 </div>
                 <div class="input-group">
-                    <label>Keahlian / Skills (Pisahkan dengan koma untuk bentuk pil)</label>
-                    <input type="text" id="skillsInput" placeholder="Node.js, React, Manajemen Proyek, Git">
+                    <label>Keahlian / Skills (Pisahkan dengan tanda koma)</label>
+                    <input type="text" id="skillsInput" placeholder="Node.js, React, Git, Manajemen Proyek">
                 </div>
             </div>
         </aside>
 
         <main class="preview-section">
-            <div id="cvPreview" class="a4-paper layout-sidebar" style="--cv-color: #3b82f6;">
+            <div id="cvPreview" class="a4-paper layout-modern-pro" style="--cv-color: #3b82f6;">
                 
-                <div class="cv-left">
-                    <div class="cv-photo-container">
-                        <img id="cvPhoto" src="" alt="Foto Profil" style="display: none;">
+                <div class="cv-top-header-block">
+                    <div class="cv-photo-container top-photo">
+                        <img class="cvPhotoClass" src="" alt="Foto Profil" style="display:none;">
                     </div>
-                    
-                    <h3 class="section-title">Kontak</h3>
-                    <div class="contact-box">
-                        <p id="cvEmail">amelia@email.com</p>
-                        <p id="cvPhone">0812-xxxx-xxxx</p>
-                        <p id="cvAddress">Jakarta, Indonesia</p>
-                        <p id="cvLink">linkedin.com/in/username</p>
-                    </div>
-                    
-                    <h3 class="section-title">Keahlian</h3>
-                    <div class="skills-box">
-                        <ul id="cvSkillsList">
-                            <li>Node.js</li>
-                            <li>React</li>
-                            <li>Manajemen Proyek</li>
-                        </ul>
+                    <h1 class="dynamic-name">Amelia Putri</h1>
+                    <h2 class="dynamic-title">Software Engineer</h2>
+                    <div class="top-contact-row">
+                        <span class="dynamic-email">amelia@email.com</span> | 
+                        <span class="dynamic-phone">0812-xxxx-xxxx</span> | 
+                        <span class="dynamic-address">Jakarta, Indonesia</span> | 
+                        <span class="dynamic-link">linkedin.com/in/username</span>
                     </div>
                 </div>
 
-                <div class="cv-right">
-                    <div class="header-name">
-                        <h1 id="cvName">Amelia Putri</h1>
-                        <h2 id="cvTitle">Software Engineer</h2>
-                    </div>
-
-                    <div class="cv-section">
-                        <h3 class="section-title">Profil</h3>
-                        <p id="cvAbout" style="text-align: justify; line-height: 1.6;">Saya adalah seorang profesional yang berkomitmen tinggi dan berpengalaman dalam membangun solusi teknologi inovatif...</p>
-                    </div>
-
-                    <div class="cv-section">
-                        <h3 class="section-title">Pengalaman Kerja</h3>
-                        <div class="timeline-item">
-                            <h4 id="cvExpTitle">Software Engineer - PT Teknologi</h4>
-                            <span class="date" id="cvExpDate">2022 - Sekarang</span>
-                            <ul id="cvExpList" class="cv-list">
-                                <li>Mengembangkan sistem aplikasi internal.</li>
-                                <li>Memimpin tim engineering untuk rilis produk baru.</li>
+                <div class="cv-table-wrapper">
+                    
+                    <div class="cv-sidebar-col">
+                        <div class="cv-photo-container sidebar-photo">
+                            <img class="cvPhotoClass" src="" alt="Foto Profil" style="display:none;">
+                        </div>
+                        
+                        <h3 class="side-section-title">Kontak</h3>
+                        <div class="side-contact-box">
+                            <p class="dynamic-email">amelia@email.com</p>
+                            <p class="dynamic-phone">0812-xxxx-xxxx</p>
+                            <p class="dynamic-address">Jakarta, Indonesia</p>
+                            <p class="dynamic-link">linkedin.com/in/username</p>
+                        </div>
+                        
+                        <h3 class="side-section-title">Keahlian</h3>
+                        <div class="skills-box">
+                            <ul id="cvSkillsList">
+                                <li>Node.js</li><li>React</li><li>Git</li>
                             </ul>
                         </div>
                     </div>
+                    
+                    <div class="cv-main-content-col">
+                        <div class="main-header-block">
+                            <h1 class="dynamic-name">Amelia Putri</h1>
+                            <h2 class="dynamic-title">Software Engineer</h2>
+                        </div>
 
-                    <div class="cv-section">
-                        <h3 class="section-title">Pendidikan</h3>
-                        <div class="timeline-item">
-                            <h4 id="cvEduTitle">S1 Ilmu Komputer - Universitas Indonesia</h4>
-                            <span class="date" id="cvEduDate">2018 - 2022</span>
+                        <div class="main-section">
+                            <h3 class="main-section-title">Profil Ringkas</h3>
+                            <p id="cvAbout">Saya adalah seorang profesional yang berkomitmen tinggi dan berpengalaman dalam membangun solusi teknologi inovatif...</p>
+                        </div>
+
+                        <div class="main-section">
+                            <h3 class="main-section-title">Pengalaman Kerja</h3>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 id="cvExpTitle">Software Engineer - PT Tech Nusantara</h4>
+                                <span class="timeline-date" id="cvExpDate">2022 - Sekarang</span>
+                                <ul id="cvExpList" class="cv-bullet-list">
+                                    <li>Mengembangkan sistem aplikasi internal.</li>
+                                    <li>Memimpin tim engineering untuk rilis produk baru.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="main-section">
+                            <h3 class="main-section-title">Pendidikan</h3>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 id="cvEduTitle">S1 Ilmu Komputer - Universitas Indonesia</h4>
+                                <span class="timeline-date" id="cvEduDate">2018 - 2022</span>
+                            </div>
                         </div>
                     </div>
                 </div>
