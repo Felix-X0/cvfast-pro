@@ -156,3 +156,74 @@ body { background-color: var(--app-bg); color: var(--app-text); }
     .form-section, .preview-section { width: 100%; height: auto; overflow: visible;}
     .a4-paper { transform: scale(0.8); transform-origin: top center; margin-bottom: -200px;}
 }
+/* --- UI TAMBAHAN KEKINIAN --- */
+* { font-family: 'Inter', sans-serif; } /* Menggunakan font Inter yang lebih profesional */
+
+/* Tombol AI (Glow Effect) */
+.btn-ai {
+    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(139, 92, 246, 0.4);
+}
+.btn-ai:hover { transform: scale(1.05); box-shadow: 0 6px 15px rgba(139, 92, 246, 0.6); }
+
+/* --- STRUKTUR KERTAS A4 --- */
+.a4-paper {
+    width: 210mm;
+    min-height: 297mm;
+    background: white;
+    margin: 0 auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    color: #1e293b;
+}
+
+/* 1. LAYOUT: MODERN SIDEBAR */
+.layout-sidebar { flex-direction: row; }
+.layout-sidebar .cv-left { width: 35%; background: #1e293b; color: white; padding: 40mm 15mm; }
+.layout-sidebar .cv-right { width: 65%; padding: 40mm 20mm; }
+.layout-sidebar .header-name h1 { font-size: 3rem; color: #0f172a; font-weight: 700; margin-bottom: 5px;}
+.layout-sidebar .header-name h2 { font-size: 1.2rem; color: var(--cv-color); margin-bottom: 30px; font-weight: 400;}
+.layout-sidebar .section-title { font-size: 1.1rem; text-transform: uppercase; border-bottom: 2px solid var(--cv-color); padding-bottom: 5px; margin-bottom: 15px; margin-top: 25px; }
+.layout-sidebar .cv-left .section-title { border-color: rgba(255,255,255,0.2); font-size: 1rem; margin-top: 30px; }
+
+/* 2. LAYOUT: EXECUTIVE ATS (Satu Kolom) */
+.layout-minimalist { flex-direction: column; padding: 25mm 20mm; font-family: 'Merriweather', serif; }
+.layout-minimalist .cv-left, .layout-minimalist .cv-right { width: 100%; padding: 0; background: transparent; color: #000; }
+.layout-minimalist .cv-left { display: flex; justify-content: center; gap: 20px; border-bottom: 1px solid #000; padding-bottom: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+.layout-minimalist .header-name { text-align: center; margin-bottom: 15px; }
+.layout-minimalist .header-name h1 { font-size: 2.5rem; text-transform: uppercase; font-family: 'Inter', sans-serif; }
+.layout-minimalist .header-name h2 { display: none; } /* Sembunyikan titel di ATS */
+.layout-minimalist .section-title { font-size: 1rem; text-transform: uppercase; border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 15px; font-weight: 700; font-family: 'Inter', sans-serif; }
+
+/* 3. LAYOUT: CREATIVE HEADER */
+.layout-header { flex-direction: column; }
+.layout-header .cv-right { padding: 15mm 20mm; width: 100%; }
+.layout-header .cv-left { width: 100%; background: var(--cv-color); color: white; padding: 25mm 20mm; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.layout-header .header-name h1 { font-size: 3rem; color: white; }
+.layout-header .header-name h2 { font-size: 1.2rem; color: rgba(255,255,255,0.8); margin-bottom: 15px; }
+.layout-header .contact-box { display: flex; gap: 15px; justify-content: center; font-size: 0.9rem; }
+.layout-header .cv-left .section-title { display: none; }
+
+/* --- FITUR KEKINIAN: SKILL BADGES --- */
+.skills-box ul { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; }
+.skills-box ul li { padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; font-family: 'Inter', sans-serif; }
+/* Warna Badge Sidebar Kiri */
+.layout-sidebar .cv-left .skills-box ul li { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); }
+/* Warna Badge Default */
+.skills-box ul li { background: #f1f5f9; color: var(--cv-color); border: 1px solid #e2e8f0; }
+
+/* --- FITUR KEKINIAN: TIMELINE --- */
+.timeline-item { position: relative; padding-left: 25px; margin-bottom: 20px; }
+.timeline-item::before { content: ''; position: absolute; left: 4px; top: 6px; bottom: 0; width: 2px; background: #cbd5e1; }
+.timeline-item::after { content: ''; position: absolute; left: 0; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--cv-color); }
+.cv-list { padding-left: 15px; line-height: 1.6; margin-top: 10px; color: #475569; font-size: 0.95rem; }
