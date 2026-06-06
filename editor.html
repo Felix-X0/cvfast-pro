@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor - CVFast Pro</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Library untuk Export PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="editor-page">
+
+    <nav class="editor-nav">
+        <div class="logo"><strong>CVFast</strong> Pro</div>
+        <div class="nav-actions">
+            <button id="saveBtn" class="btn-secondary">Simpan Draft</button>
+            <button id="exportPdfBtn" class="btn-primary">Export PDF</button>
+        </div>
+    </nav>
+
+    <div class="editor-container">
+        <!-- Sisi Kiri: Form Input -->
+        <aside class="form-section">
+            <h3>Data Pribadi</h3>
+            
+            <div class="input-group">
+                <label>Foto Profil</label>
+                <input type="file" id="photoInput" accept="image/*">
+            </div>
+            <div class="input-group">
+                <label>Gaya Foto</label>
+                <select id="photoShape">
+                    <option value="round">Bulat</option>
+                    <option value="square">Kotak</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Pilih Desain / Template</label>
+                <select id="templateSelect">
+                    <option value="template-modern">Modern Minimalis</option>
+                    <option value="template-classic">Klasik Profesional</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Nama Lengkap</label>
+                <input type="text" id="nameInput" placeholder="Misal: Budi Santoso">
+            </div>
+            
+            <div class="input-group">
+                <label>Profesi / Posisi</label>
+                <input type="text" id="titleInput" placeholder="Misal: Software Engineer">
+            </div>
+
+            <div class="input-group">
+                <label>Profil / Tentang Saya</label>
+                <textarea id="aboutInput" rows="4" placeholder="Ceritakan singkat tentang diri Anda..."></textarea>
+            </div>
+
+            <!-- Tambahkan input pengalaman dan pendidikan di sini sesuai kebutuhan -->
+        </aside>
+
+        <!-- Sisi Kanan: Live Preview Kertas A4 -->
+        <main class="preview-section">
+            <div class="a4-paper template-modern" id="cvPreview">
+                <div class="cv-header">
+                    <img id="cvPhoto" src="" alt="Foto Profil" class="photo-round" style="display: none;">
+                    <div class="cv-title-area">
+                        <h1 id="cvName">Nama Anda</h1>
+                        <h2 id="cvTitle">Profesi Anda</h2>
+                    </div>
+                </div>
+                
+                <div class="cv-body">
+                    <div class="cv-section">
+                        <h3>Tentang Saya</h3>
+                        <p id="cvAbout">Deskripsi profil Anda akan muncul di sini.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
