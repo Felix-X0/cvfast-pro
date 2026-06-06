@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editor - CVFast Pro</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- Library untuk Export PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body class="editor-page">
@@ -14,75 +13,130 @@
     <nav class="editor-nav">
         <div class="logo"><strong>CVFast</strong> Pro</div>
         <div class="nav-actions">
-            <button id="saveBtn" class="btn-secondary">Simpan Draft</button>
+            <button id="saveBtn" class="btn-secondary">Simpan Draft Lokal</button>
             <button id="exportPdfBtn" class="btn-primary">Export PDF</button>
         </div>
     </nav>
 
     <div class="editor-container">
-        <!-- Sisi Kiri: Form Input -->
         <aside class="form-section">
-            <h3>Data Pribadi</h3>
-            
+            <div class="control-panel">
+                <h3>Pengaturan Desain</h3>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Pilih Layout</label>
+                        <select id="layoutSelect">
+                            <option value="layout-sidebar">Modern (Sidebar)</option>
+                            <option value="layout-header">Kreatif (Header Atas)</option>
+                            <option value="layout-minimalist">Klasik (Minimalis)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Warna Tema</label>
+                        <select id="themeSelect">
+                            <option value="theme-blue">Biru Profesional</option>
+                            <option value="theme-dark">Hitam Elegan</option>
+                            <option value="theme-emerald">Hijau Zamrud</option>
+                            <option value="theme-red">Merah Berani</option>
+                            <option value="theme-purple">Ungu Kreatif</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <h3>Data Pribadi & Kontak</h3>
             <div class="input-group">
-                <label>Foto Profil</label>
+                <label>Foto Profil (Opsional)</label>
                 <input type="file" id="photoInput" accept="image/*">
             </div>
-            <div class="input-group">
-                <label>Gaya Foto</label>
-                <select id="photoShape">
-                    <option value="round">Bulat</option>
-                    <option value="square">Kotak</option>
-                </select>
+            <div class="input-group"><label>Nama Lengkap</label><input type="text" id="nameInput" placeholder="Budi Santoso"></div>
+            <div class="input-group"><label>Profesi / Posisi Target</label><input type="text" id="titleInput" placeholder="Software Engineer"></div>
+            <div class="input-row">
+                <div class="input-group"><label>Email</label><input type="email" id="emailInput" placeholder="budi@email.com"></div>
+                <div class="input-group"><label>No. HP</label><input type="text" id="phoneInput" placeholder="0812-xxxx-xxxx"></div>
             </div>
+            <div class="input-group"><label>Alamat / Kota</label><input type="text" id="addressInput" placeholder="Jakarta, Indonesia"></div>
+            <div class="input-group"><label>LinkedIn / Portfolio</label><input type="text" id="linkInput" placeholder="linkedin.com/in/budi"></div>
+            <div class="input-group"><label>Profil / Tentang Saya</label><textarea id="aboutInput" rows="4" placeholder="Profesional berpengalaman dengan dedikasi tinggi..."></textarea></div>
 
-            <div class="input-group">
-                <label>Pilih Desain / Template</label>
-                <select id="templateSelect">
-                    <option value="template-modern">Modern Minimalis</option>
-                    <option value="template-classic">Klasik Profesional</option>
-                </select>
-            </div>
+            <hr>
 
-            <div class="input-group">
-                <label>Nama Lengkap</label>
-                <input type="text" id="nameInput" placeholder="Misal: Budi Santoso">
-            </div>
-            
-            <div class="input-group">
-                <label>Profesi / Posisi</label>
-                <input type="text" id="titleInput" placeholder="Misal: Software Engineer">
-            </div>
+            <h3>Pengalaman Kerja</h3>
+            <div class="input-group"><label>Posisi & Perusahaan</label><input type="text" id="expTitle" placeholder="Manajer Pemasaran - PT Maju Jaya"></div>
+            <div class="input-group"><label>Tahun Bekerja</label><input type="text" id="expDate" placeholder="2020 - Sekarang"></div>
+            <div class="input-group"><label>Deskripsi Pekerjaan</label><textarea id="expDesc" rows="3" placeholder="Memimpin tim marketing beranggotakan 10 orang..."></textarea></div>
 
-            <div class="input-group">
-                <label>Profil / Tentang Saya</label>
-                <textarea id="aboutInput" rows="4" placeholder="Ceritakan singkat tentang diri Anda..."></textarea>
-            </div>
+            <hr>
 
-            <!-- Tambahkan input pengalaman dan pendidikan di sini sesuai kebutuhan -->
+            <h3>Pendidikan</h3>
+            <div class="input-group"><label>Gelar & Universitas</label><input type="text" id="eduTitle" placeholder="S1 Ilmu Komputer - Universitas Indonesia"></div>
+            <div class="input-group"><label>Tahun Lulus</label><input type="text" id="eduDate" placeholder="2015 - 2019"></div>
+
+            <hr>
+
+            <h3>Keahlian (Skills)</h3>
+            <div class="input-group">
+                <label>Pisahkan dengan koma (Misal: Leadership, Public Speaking, SEO)</label>
+                <textarea id="skillsInput" rows="2" placeholder="Manajemen Proyek, Desain Grafis, HTML/CSS"></textarea>
+            </div>
         </aside>
 
-        <!-- Sisi Kanan: Live Preview Kertas A4 -->
         <main class="preview-section">
-            <div class="a4-paper template-modern" id="cvPreview">
-                <div class="cv-header">
-                    <img id="cvPhoto" src="" alt="Foto Profil" class="photo-round" style="display: none;">
-                    <div class="cv-title-area">
-                        <h1 id="cvName">Nama Anda</h1>
-                        <h2 id="cvTitle">Profesi Anda</h2>
+            <div class="a4-paper layout-sidebar theme-blue" id="cvPreview">
+                
+                <div class="cv-left">
+                    <img id="cvPhoto" src="" alt="" style="display: none;">
+                    <div class="contact-box">
+                        <h4>Kontak</h4>
+                        <p id="cvEmail">budi@email.com</p>
+                        <p id="cvPhone">0812-xxxx-xxxx</p>
+                        <p id="cvAddress">Jakarta, Indonesia</p>
+                        <p id="cvLink">linkedin.com/in/budi</p>
+                    </div>
+                    <div class="skills-box">
+                        <h4>Keahlian</h4>
+                        <ul id="cvSkillsList">
+                            <li>Manajemen Proyek</li>
+                            <li>Desain Grafis</li>
+                        </ul>
                     </div>
                 </div>
-                
-                <div class="cv-body">
+
+                <div class="cv-right">
+                    <div class="header-name">
+                        <h1 id="cvName">Budi Santoso</h1>
+                        <h2 id="cvTitle">Software Engineer</h2>
+                    </div>
+
                     <div class="cv-section">
                         <h3>Tentang Saya</h3>
-                        <p id="cvAbout">Deskripsi profil Anda akan muncul di sini.</p>
+                        <p id="cvAbout">Profesional berpengalaman dengan dedikasi tinggi...</p>
+                    </div>
+
+                    <div class="cv-section">
+                        <h3>Pengalaman Kerja</h3>
+                        <div class="timeline-item">
+                            <h4 id="cvExpTitle">Manajer Pemasaran - PT Maju Jaya</h4>
+                            <span class="date" id="cvExpDate">2020 - Sekarang</span>
+                            <p id="cvExpDesc">Memimpin tim marketing beranggotakan 10 orang...</p>
+                        </div>
+                    </div>
+
+                    <div class="cv-section">
+                        <h3>Pendidikan</h3>
+                        <div class="timeline-item">
+                            <h4 id="cvEduTitle">S1 Ilmu Komputer - Universitas Indonesia</h4>
+                            <span class="date" id="cvEduDate">2015 - 2019</span>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </main>
     </div>
 
-    <script src="js/script.js"></script>
+    <script src="./js/script.js"></script>
 </body>
 </html>
