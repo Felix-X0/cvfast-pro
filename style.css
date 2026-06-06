@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+    --app-primary: #3b82f6;
+    --app-bg: #f1f5f9;
+    --app-text: #1e293b;
+    --app-border: #cbd5e1;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+body { background-color: var(--app-bg); color: var(--app-text); }
+
+/* --- UI ELEMENTS --- */
+.btn-primary, .btn-secondary, .btn-large {
+    padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; transition: 0.3s;
+}
+.btn-primary { background: var(--app-primary); color: white; }
+.btn-primary:hover { background: #2563eb; transform: translateY(-2px); }
+.btn-secondary { background: white; color: var(--app-text); border: 1px solid var(--app-border); }
+.btn-secondary:hover { background: #e2e8f0; }
+.btn-large { font-size: 1.1rem; padding: 15px 35px; margin-top: 20px; display: inline-block; text-decoration: none; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);}
+
+/* --- LANDING PAGE --- */
+.navbar { display: flex; justify-content: space-between; padding: 20px 5%; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.logo { font-size: 1.5rem; color: var(--app-text); }
+.logo strong { color: var(--app-primary); }
+.hero { height: calc(100vh - 80px); display: flex; align-items: center; justify-content: center; text-align: center; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); padding: 20px; }
+.hero-content { max-width: 800px; background: rgba(255, 255, 255, 0.6); padding: 50px; border-radius: 20px; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid white;}
+.badge { display: inline-block; background: #dbeafe; color: #1e40af; padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-bottom: 20px; }
+.hero h1 { font-size: 3.5rem; margin-bottom: 20px; line-height: 1.2; color: #0f172a;}
+.highlight { color: var(--app-primary); }
+.hero p { font-size: 1.1rem; color: #475569; line-height: 1.8; margin-bottom: 30px; }
+
+/* --- CSS BARU UNTUK TOMBOL DUKUNGAN (SOCIABUZZ & IG) --- */
+.creator-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+.btn-donate {
+    background: #f59e0b; /* Warna Emas/Kopi */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+}
+.btn-donate:hover { background: #d97706; transform: translateY(-2px); }
+
+.btn-ig {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(220, 39, 67, 0.3);
+}
+.btn-ig:hover { transform: translateY(-2px); }
+
+.sidebar-support {
+    margin-top: 30px;
+    padding: 15px;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    text-align: center;
+}
+.sidebar-support p {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-bottom: 10px;
+}
+
+/* --- EDITOR PAGE --- */
+.editor-nav { display: flex; justify-content: space-between; padding: 15px 3%; background: white; border-bottom: 1px solid var(--app-border); }
+.editor-container { display: flex; height: calc(100vh - 70px); }
+.form-section { width: 35%; background: white; padding: 30px; overflow-y: auto; border-right: 1px solid var(--app-border); }
+.form-section h3 { margin-top: 20px; margin-bottom: 15px; color: #0f172a; font-size: 1.1rem; }
+.form-section hr { border: none; border-top: 1px dashed var(--app-border); margin: 25px 0; }
+.input-row { display: flex; gap: 15px; }
+.input-row .input-group { flex: 1; }
+.input-group { margin-bottom: 15px; }
+.input-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; color: #64748b; }
+.input-group input, .input-group textarea, .input-group select { width: 100%; padding: 10px; border: 1px solid var(--app-border); border-radius: 6px; outline: none; background: #f8fafc; font-family: inherit;}
+.input-group input:focus, .input-group textarea:focus { border-color: var(--app-primary); background: white;}
+.control-panel { background: #f1f5f9; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0;}
+
+/* --- AREA PREVIEW (KERTAS A4) --- */
+.preview-section { width: 65%; padding: 40px; overflow-y: auto; display: flex; justify-content: center; background: #94a3b8; }
+.a4-paper { width: 210mm; min-height: 297mm; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; overflow: hidden;}
+
+/* --- SISTEM TEMA WARNA --- */
+.theme-blue { --cv-color: #2563eb; --cv-text-light: #eff6ff; }
+.theme-dark { --cv-color: #1e293b; --cv-text-light: #f8fafc; }
+.theme-emerald { --cv-color: #059669; --cv-text-light: #ecfdf5; }
+.theme-red { --cv-color: #dc2626; --cv-text-light: #fef2f2; }
+.theme-purple { --cv-color: #7c3aed; --cv-text-light: #f5f3ff; }
+
+/* --- SISTEM LAYOUT --- */
+/* 1. Layout Sidebar (Modern) */
+.layout-sidebar { display: flex; }
+.layout-sidebar .cv-left { width: 35%; background: var(--cv-color); color: var(--cv-text-light); padding: 40px 30px; }
+.layout-sidebar .cv-right { width: 65%; padding: 40px 30px; background: white; }
+.layout-sidebar #cvPhoto { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.2); margin-bottom: 30px; display: block; }
+.layout-sidebar .header-name h1 { font-size: 2.5rem; color: #0f172a; line-height: 1.1; margin-bottom: 5px; }
+.layout-sidebar .header-name h2 { font-size: 1.2rem; color: var(--cv-color); font-weight: 400; margin-bottom: 30px; }
+
+/* 2. Layout Header (Kreatif) */
+.layout-header { display: block; }
+.layout-header .cv-left { display: flex; justify-content: space-around; background: var(--cv-color); color: var(--cv-text-light); padding: 20px; text-align: center;}
+.layout-header #cvPhoto { position: absolute; top: 20px; left: 40px; width: 100px; height: 100px; border-radius: 10px; object-fit: cover; }
+.layout-header .cv-right { padding: 40px; padding-top: 20px;}
+.layout-header .header-name { text-align: right; padding-bottom: 20px; border-bottom: 3px solid var(--cv-color); margin-bottom: 20px;}
+.layout-header .header-name h1 { font-size: 3rem; color: var(--cv-color); }
+
+/* 3. Layout Minimalist (Klasik) */
+.layout-minimalist { display: block; padding: 40px; }
+.layout-minimalist .cv-left { color: #333; margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px; display: flex; justify-content: space-between;}
+.layout-minimalist .cv-right { padding: 0; }
+.layout-minimalist #cvPhoto { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; float: left; margin-right: 20px; }
+.layout-minimalist .header-name h1 { font-size: 2.5rem; color: #111; }
+.layout-minimalist .header-name h2 { font-size: 1.2rem; color: #555; margin-bottom: 20px;}
+.layout-minimalist .cv-section h3 { color: var(--cv-color); border-bottom: 2px solid var(--cv-color); display: inline-block; margin-bottom: 15px;}
+
+/* Elemen CV Umum */
+.cv-section { margin-bottom: 25px; }
+.layout-sidebar .cv-section h3 { color: #0f172a; text-transform: uppercase; font-size: 1.1rem; border-bottom: 2px solid var(--cv-color); padding-bottom: 5px; margin-bottom: 15px; }
+.contact-box h4, .skills-box h4 { text-transform: uppercase; margin-bottom: 10px; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px; margin-top: 20px;}
+.contact-box p { font-size: 0.85rem; margin-bottom: 8px; word-break: break-all; }
+.skills-box ul { list-style-type: none; padding: 0; }
+.skills-box ul li { font-size: 0.9rem; margin-bottom: 8px; position: relative; padding-left: 15px; }
+.skills-box ul li::before { content: "•"; position: absolute; left: 0; color: inherit; }
+.timeline-item { margin-bottom: 15px; }
+.timeline-item h4 { font-size: 1.1rem; color: #1e293b; }
+.timeline-item .date { font-size: 0.85rem; color: var(--cv-color); font-weight: 600; display: block; margin-bottom: 5px; }
+.timeline-item p { font-size: 0.95rem; color: #475569; line-height: 1.6; }
+.cv-section > p { font-size: 0.95rem; color: #475569; line-height: 1.6; }
+
+@media (max-width: 900px) {
+    .editor-container { flex-direction: column; overflow: visible;}
+    .form-section, .preview-section { width: 100%; height: auto; overflow: visible;}
+    .a4-paper { transform: scale(0.8); transform-origin: top center; margin-bottom: -200px;}
+}

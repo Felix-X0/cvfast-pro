@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor - CVFast Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="editor-page">
+
+    <nav class="editor-nav">
+        <div class="logo"><strong>CVFast</strong> Pro</div>
+        <div class="nav-actions">
+            <button id="saveBtn" class="btn-secondary">Simpan Draft</button>
+            <button id="exportPdfBtn" class="btn-primary">Export PDF</button>
+        </div>
+    </nav>
+
+    <div class="editor-container">
+        <aside class="form-section">
+            <div class="control-panel">
+                <h3>Pengaturan Desain</h3>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Pilih Layout</label>
+                        <select id="layoutSelect">
+                            <option value="layout-sidebar">Modern (Sidebar)</option>
+                            <option value="layout-header">Kreatif (Header Atas)</option>
+                            <option value="layout-minimalist">Klasik (Minimalis)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Warna Tema</label>
+                        <select id="themeSelect">
+                            <option value="theme-blue">Biru Profesional</option>
+                            <option value="theme-dark">Hitam Elegan</option>
+                            <option value="theme-emerald">Hijau Zamrud</option>
+                            <option value="theme-red">Merah Berani</option>
+                            <option value="theme-purple">Ungu Kreatif</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <h3>Data Pribadi & Kontak</h3>
+            <div class="input-group"><label>Foto Profil (Opsional)</label><input type="file" id="photoInput" accept="image/*"></div>
+            <div class="input-group"><label>Nama Lengkap</label><input type="text" id="nameInput" placeholder="Budi Santoso"></div>
+            <div class="input-group"><label>Profesi / Posisi Target</label><input type="text" id="titleInput" placeholder="Software Engineer"></div>
+            <div class="input-row">
+                <div class="input-group"><label>Email</label><input type="email" id="emailInput" placeholder="budi@email.com"></div>
+                <div class="input-group"><label>No. HP</label><input type="text" id="phoneInput" placeholder="0812-xxxx-xxxx"></div>
+            </div>
+            <div class="input-group"><label>Alamat / Kota</label><input type="text" id="addressInput" placeholder="Jakarta, Indonesia"></div>
+            <div class="input-group"><label>LinkedIn / Portfolio</label><input type="text" id="linkInput" placeholder="linkedin.com/in/budi"></div>
+            <div class="input-group"><label>Profil / Tentang Saya</label><textarea id="aboutInput" rows="4" placeholder="Profesional berpengalaman dengan dedikasi tinggi..."></textarea></div>
+
+            <hr>
+
+            <h3>Pengalaman Kerja</h3>
+            <div class="input-group"><label>Posisi & Perusahaan</label><input type="text" id="expTitle" placeholder="Manajer Pemasaran - PT Maju Jaya"></div>
+            <div class="input-group"><label>Tahun Bekerja</label><input type="text" id="expDate" placeholder="2020 - Sekarang"></div>
+            <div class="input-group"><label>Deskripsi Pekerjaan</label><textarea id="expDesc" rows="3" placeholder="Memimpin tim marketing..."></textarea></div>
+
+            <hr>
+
+            <h3>Pendidikan</h3>
+            <div class="input-group"><label>Gelar & Universitas</label><input type="text" id="eduTitle" placeholder="S1 Ilmu Komputer - Universitas Indonesia"></div>
+            <div class="input-group"><label>Tahun Lulus</label><input type="text" id="eduDate" placeholder="2015 - 2019"></div>
+
+            <hr>
+
+            <h3>Keahlian (Skills)</h3>
+            <div class="input-group">
+                <label>Pisahkan dengan koma (Misal: Leadership, SEO)</label>
+                <textarea id="skillsInput" rows="2" placeholder="Manajemen Proyek, Desain Grafis"></textarea>
+            </div>
+
+            <div class="sidebar-support">
+                <p>Aplikasi ini sangat membantu? Dukung pembuatnya!</p>
+                <div class="creator-links" style="margin-top: 10px; padding-top: 0; border: none;">
+                    <a href="https://sociabuzz.com/cadis77/tribe" target="_blank" class="btn-donate">☕ Sawer</a>
+                    <a href="https://www.instagram.com/cadis_1w?igsh=MXh3OXkzNWJyYjA5dQ%3D%3D&utm_source=qr" target="_blank" class="btn-ig">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        Instagram
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <main class="preview-section">
+            <div class="a4-paper layout-sidebar theme-blue" id="cvPreview">
+                <div class="cv-left">
+                    <img id="cvPhoto" src="" alt="" style="display: none;">
+                    <div class="contact-box">
+                        <h4>Kontak</h4>
+                        <p id="cvEmail">budi@email.com</p>
+                        <p id="cvPhone">0812-xxxx-xxxx</p>
+                        <p id="cvAddress">Jakarta, Indonesia</p>
+                        <p id="cvLink">linkedin.com/in/budi</p>
+                    </div>
+                    <div class="skills-box">
+                        <h4>Keahlian</h4>
+                        <ul id="cvSkillsList"><li>Manajemen Proyek</li><li>Desain Grafis</li></ul>
+                    </div>
+                </div>
+                <div class="cv-right">
+                    <div class="header-name"><h1 id="cvName">Budi Santoso</h1><h2 id="cvTitle">Software Engineer</h2></div>
+                    <div class="cv-section"><h3>Tentang Saya</h3><p id="cvAbout">Profesional berpengalaman dengan dedikasi tinggi...</p></div>
+                    <div class="cv-section"><h3>Pengalaman Kerja</h3><div class="timeline-item"><h4 id="cvExpTitle">Manajer Pemasaran - PT Maju Jaya</h4><span class="date" id="cvExpDate">2020 - Sekarang</span><p id="cvExpDesc">Memimpin tim marketing...</p></div></div>
+                    <div class="cv-section"><h3>Pendidikan</h3><div class="timeline-item"><h4 id="cvEduTitle">S1 Ilmu Komputer - Universitas Indonesia</h4><span class="date" id="cvEduDate">2015 - 2019</span></div></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
