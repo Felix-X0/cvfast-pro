@@ -1,388 +1,133 @@
-```css
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-/* --- VARIABEL WARNA NUANSA SINEMATIK (CINEMATIC NATURE) --- */
 :root {
-    --app-primary: #f59e0b; /* Warna Emas Matahari Terbenam Sinematik */
+    --app-primary: #f59e0b;
     --app-primary-glow: rgba(245, 158, 11, 0.5);
-    --app-text: #e2e8f0;    /* Teks Terang Sinematik (Pop) */
+    --app-text: #e2e8f0;
     --app-border: rgba(255, 255, 255, 0.06);
 }
 
-* { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-    font-family: 'Poppins', sans-serif; 
-}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
 body { 
     color: var(--app-text); 
     overflow-x: hidden;
-    /* Efek Background Hidup/Bergerak di Seluruh Web */
     background: linear-gradient(-45deg, #020617, #0f172a, #111827, #010101);
     background-size: 400% 400%;
     animation: natureBreathe 15s ease infinite;
 }
 
-/* Animasi Pernapasan Alam / Matahari Terbenam */
 @keyframes natureBreathe {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
 
-/* --- UI ELEMENTS (TOMBOL & AKSI) --- */
+/* --- TOMBOL DENGAN ANIMASI KLIK PRO --- */
 .btn-primary, .btn-secondary, .btn-large {
     padding: 10px 20px; 
-    border-radius: 30px; /* Radius lebih pro */
+    border-radius: 30px; 
     border: none; 
     cursor: pointer; 
     font-weight: 600; 
+    position: relative;
+    overflow: hidden; /* Penting untuk efek ripple */
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 50;
+    /* Animasi saat ditekan (active) */
+    transform: scale(1);
+}
+
+.btn-primary:active, .btn-large:active {
+    transform: scale(0.95); /* Efek membal saat ditekan */
+}
+
+/* Efek Ripple (Gelombang) */
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+}
+
+.btn-primary:active::after {
+    width: 200px; height: 200px;
+    opacity: 0;
 }
 
 .btn-primary { 
     background: var(--app-primary); 
-    color: #0f172a; /* Teks gelap di tombol emas agar pop */
+    color: #000; 
     box-shadow: 0 0 15px var(--app-primary-glow);
 }
 .btn-primary:hover { 
-    background: #d97706; 
+    background: #fbbf24; 
     transform: translateY(-2px); 
     box-shadow: 0 0 25px var(--app-primary);
-}
-
-.btn-secondary { 
-    background: rgba(255, 255, 255, 0.04); 
-    color: var(--app-text); 
-    border: 1px solid var(--app-border); 
-}
-.btn-secondary:hover { 
-    background: rgba(255, 255, 255, 0.1); 
-    border-color: rgba(255,255,255,0.3);
 }
 
 .btn-large { 
     font-size: 1.1rem; 
     padding: 16px 40px; 
-    margin-top: 20px; 
-    display: inline-block; 
-    text-decoration: none; 
     background: var(--app-primary);
-    color: #0f172a;
+    color: #000;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 0 30px var(--app-primary-glow), inset 0 0 10px rgba(255,255,255,0.2);
-}
-.btn-large:hover {
-    background: #fbbf24;
-    box-shadow: 0 0 45px rgba(251, 191, 36, 0.8);
-    transform: translateY(-3px);
+    box-shadow: 0 0 30px var(--app-primary-glow);
 }
 
-/* --- LANDING PAGE (HALAMAN DEPAN) --- */
-.navbar { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center;
-    padding: 20px 5%; 
-    background: rgba(2, 6, 23, 0.6); /* Transparan blur sinematik */
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-bottom: 1px solid var(--app-border);
-    position: sticky;
-    top: 0;
+/* --- CONTROL PANEL STICKY (Agar Tombol Simpan Selalu Kelihatan) --- */
+.control-panel { 
+    background: rgba(15, 23, 42, 0.95);
+    padding: 15px; 
+    border-radius: 12px; 
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    position: sticky; 
+    bottom: 20px; /* Selalu menempel di bawah */
     z-index: 100;
-}
-
-.logo { font-size: 1.5rem; color: #fff; letter-spacing: 1px; }
-.logo strong { color: #f59e0b; text-shadow: 0 0 15px var(--app-primary-glow); }
-
-.hero { 
-    height: calc(100vh - 80px); 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    text-align: center; 
-    background: transparent; /* Memperlihatkan background body yang bergerak */
-    padding: 20px; 
-}
-
-.hero-content { 
-    max-width: 850px; 
-    background: rgba(15, 23, 42, 0.4); /* Glassmorphism sinematik gelap */
-    padding: 50px; 
-    border-radius: 24px; 
-    backdrop-filter: blur(25px); 
-    -webkit-backdrop-filter: blur(25px);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.1); 
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    animation: fadeInUp 1s ease forwards;
-}
-
-.badge { 
-    display: inline-block; 
-    background: rgba(245, 158, 11, 0.1); 
-    color: #fef3c7; 
-    padding: 6px 18px; 
-    border-radius: 30px; 
-    font-size: 0.85rem; 
-    font-weight: 600; 
-    margin-bottom: 25px; 
-    border: 1px solid rgba(245, 158, 11, 0.2);
-}
-
-.hero h1 { 
-    font-size: 3.8rem; 
-    margin-bottom: 25px; 
-    line-height: 1.15; 
-    color: #ffffff;
-    text-shadow: 0 10px 20px rgba(0,0,0,0.4);
-}
-
-/* Gradasi Warna Sinematik pada Teks */
-.highlight { 
-    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.hero p { font-size: 1.15rem; color: #94a3b8; line-height: 1.8; margin-bottom: 30px; }
-
-.creator-links {
+    margin: 20px;
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin-top: 35px;
-    padding-top: 25px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-}
-
-.btn-donate {
-    background: #f59e0b; 
-    color: white;
-    padding: 12px 24px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: 0.3s;
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-}
-.btn-donate:hover { background: #d97706; transform: translateY(-2px); box-shadow: 0 0 25px #f59e0b; }
-
-.btn-ig {
-    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-    color: white;
-    padding: 12px 24px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: 0.3s;
-    box-shadow: 0 4px 15px rgba(220, 39, 67, 0.4);
-}
-.btn-ig:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(220, 39, 67, 0.6); }
-
-
-/* --- EDITOR PAGE (HALAMAN EDIT CV) --- */
-.editor-nav { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center;
-    padding: 12px 3%; 
-    background: rgba(2, 6, 23, 0.8); 
-    border-bottom: 1px solid var(--app-border); 
-}
-
-.editor-container { 
-    display: flex; 
-    height: calc(100vh - 65px); 
-    background: transparent; /* Tembus pandang ke background animasi */
-}
-
-/* Form Section Input */
-.form-section { 
-    width: 35%; 
-    background: rgba(15, 23, 42, 0.8); /* Kaca gelap sinematik murni */
     backdrop-filter: blur(10px);
-    padding: 20px; 
-    overflow-y: auto; 
-    border-right: 1px solid var(--app-border); 
 }
 
-/* Scrollbar Cantik Tipis */
-.form-section::-webkit-scrollbar { width: 5px; }
-.form-section::-webkit-scrollbar-track { background: transparent; }
-.form-section::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
-.form-section::-webkit-scrollbar-thumb:hover { background: var(--app-primary); }
-
-.form-section h3 { 
-    margin-top: 15px; 
-    margin-bottom: 12px; 
-    color: #fff; 
-    font-size: 0.95rem; 
-    letter-spacing: 0.5px;
-    border-left: 3px solid var(--app-primary); 
-    padding-left: 8px;
-}
-.form-section hr { border: none; border-top: 1px dashed rgba(255,255,255,0.06); margin: 18px 0; }
-
-/* Struktur Sejajar Rapi Menghemat Ruang */
-.input-group { 
-    margin-bottom: 10px; 
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-.input-group label { 
-    display: block; 
-    font-size: 0.8rem; 
-    font-weight: 600; 
-    color: #94a3b8; 
-    flex: 0 0 28%; 
-    margin-bottom: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.input-group input, .input-group textarea, .input-group select { 
-    flex: 1; 
-    padding: 8px 12px; 
-    border: 1px solid rgba(255,255,255,0.06); 
-    border-radius: 6px; 
-    outline: none; 
-    background: rgba(2, 6, 23, 0.6); 
-    color: #fff;
-    font-family: inherit;
-    transition: 0.2s;
-}
-.input-group input:focus, .input-group textarea:focus, .input-group select:focus { 
-    border-color: var(--app-primary); 
-    background: rgba(2, 6, 23, 0.9);
-    box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+/* --- HERO & LAYOUT --- */
+.navbar { 
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 5%; background: rgba(2, 6, 23, 0.6); 
+    backdrop-filter: blur(15px); border-bottom: 1px solid var(--app-border);
+    position: sticky; top: 0; z-index: 100;
 }
 
-.input-group textarea {
-    resize: vertical;
-    min-height: 40px;
-    height: 42px;
+.hero { 
+    height: calc(100vh - 80px); display: flex; align-items: center; 
+    justify-content: center; text-align: center; padding: 20px; 
 }
 
-.input-row { 
-    display: flex; 
-    gap: 12px; 
-    margin-bottom: 10px;
-}
-.input-row .input-group { 
-    flex: 1; 
-    display: block; 
-    margin-bottom: 0;
-}
-.input-row .input-group label {
-    margin-bottom: 4px;
-    width: auto;
-    display: block;
+.hero-content { 
+    max-width: 850px; background: rgba(15, 23, 42, 0.4); 
+    padding: 50px; border-radius: 24px; backdrop-filter: blur(25px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05);
+    animation: fadeInUp 1s ease forwards;
 }
 
-.control-panel { 
-    background: rgba(255,255,255,0.02); 
-    padding: 15px; 
-    border-radius: 10px; 
-    border: 1px solid rgba(255,255,255,0.03);
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.sidebar-support {
-    margin-top: 20px;
-    padding: 12px;
-    background: rgba(255,255,255,0.01);
-    border: 1px dashed rgba(255,255,255,0.06);
-    border-radius: 8px;
-    text-align: center;
-}
-.sidebar-support p { font-size: 0.8rem; color: #94a3b8; margin-bottom: 8px; }
+/* --- EDITOR PAGE --- */
+.editor-container { display: flex; height: calc(100vh - 65px); background: transparent; }
+.form-section { width: 35%; background: rgba(15, 23, 42, 0.8); padding: 20px; overflow-y: auto; border-right: 1px solid var(--app-border); }
+.preview-section { width: 65%; padding: 30px; overflow-y: auto; display: flex; justify-content: center; background: rgba(1, 1, 1, 0.4); }
 
-/* Area Kanan Studio Preview */
-.preview-section { 
-    width: 65%; 
-    padding: 30px; 
-    overflow-y: auto; 
-    display: flex; 
-    justify-content: center; 
-    background: rgba(1, 1, 1, 0.4); /* Efek redup studio film */
-}
-
-/* --- AREA KERTAS A4 (Tetap Putih Bersih Agar Sempurna Saat Dicetak) --- */
-.a4-paper { 
-    width: 210mm; 
-    min-height: 297mm; 
-    background: white; 
-    color: #1e293b; 
-    box-shadow: 0 20px 60px rgba(0,0,0,0.7); 
-    position: relative; 
-    overflow: hidden;
-}
-
-/* --- SISTEM TEMA WARNA SINEMATIK --- */
-.theme-blue { --cv-color: #2563eb; --cv-text-light: #eff6ff; }
-.theme-dark { --cv-color: #1e293b; --cv-text-light: #f8fafc; }
-.theme-emerald { --cv-color: #059669; --cv-text-light: #ecfdf5; }
-.theme-red { --cv-color: #dc2626; --cv-text-light: #fef2f2; }
-.theme-purple { --cv-color: #7c3aed; --cv-text-light: #f5f3ff; }
-
-/* --- SISTEM LAYOUT --- */
-/* 1. Layout Sidebar (Modern Sinematik) */
-.layout-sidebar { display: flex; }
-.layout-sidebar .cv-left { width: 35%; background: var(--cv-color); color: var(--cv-text-light); padding: 40px 30px; }
-.layout-sidebar .cv-right { width: 65%; padding: 40px 30px; background: white; }
-.layout-sidebar #cvPhoto { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.2); margin-bottom: 30px; display: block; }
-.layout-sidebar .header-name h1 { font-size: 2.5rem; color: #0f172a; line-height: 1.1; margin-bottom: 5px; }
-.layout-sidebar .header-name h2 { font-size: 1.2rem; color: var(--cv-color); font-weight: 400; margin-bottom: 30px; }
-
-/* 2. Layout Header (Kreatif Sinematik) */
-.layout-header { display: block; }
-.layout-header .cv-left { display: flex; justify-content: space-around; background: var(--cv-color); color: var(--cv-text-light); padding: 20px; text-align: center;}
-.layout-header #cvPhoto { position: absolute; top: 20px; left: 40px; width: 100px; height: 100px; border-radius: 10px; object-fit: cover; }
-.layout-header .cv-right { padding: 40px; padding-top: 20px;}
-.layout-header .header-name { text-align: right; padding-bottom: 20px; border-bottom: 3px solid var(--cv-color); margin-bottom: 20px;}
-.layout-header .header-name h1 { font-size: 3rem; color: var(--cv-color); }
-
-/* 3. Layout Minimalist (Klasik Sinematik) */
-.layout-minimalist { display: block; padding: 40px; }
-.layout-minimalist .cv-left { color: #333; margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px; display: flex; justify-content: space-between;}
-.layout-minimalist .cv-right { padding: 0; }
-.layout-minimalist #cvPhoto { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; float: left; margin-right: 20px; }
-.layout-minimalist .header-name h1 { font-size: 2.5rem; color: #111; }
-.layout-minimalist .header-name h2 { font-size: 1.2rem; color: #555; margin-bottom: 20px;}
-.layout-minimalist .cv-section h3 { color: var(--cv-color); border-bottom: 2px solid var(--cv-color); display: inline-block; margin-bottom: 15px;}
-
-/* Elemen CV Umum */
-.cv-section { margin-bottom: 25px; }
-.layout-sidebar .cv-section h3 { color: #0f172a; text-transform: uppercase; font-size: 1.1rem; border-bottom: 2px solid var(--cv-color); padding-bottom: 5px; margin-bottom: 15px; }
-.contact-box h4, .skills-box h4 { text-transform: uppercase; margin-bottom: 10px; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px; margin-top: 20px;}
-.contact-box p { font-size: 0.85rem; margin-bottom: 8px; word-break: break-all; }
-.skills-box ul { list-style-type: none; padding: 0; }
-.skills-box ul li { font-size: 0.9rem; margin-bottom: 8px; position: relative; padding-left: 15px; }
-.skills-box ul li::before { content: "•"; position: absolute; left: 0; color: inherit; }
-.timeline-item { margin-bottom: 15px; }
-.timeline-item h4 { font-size: 1.1rem; color: #1e293b; }
-.timeline-item .date { font-size: 0.85rem; color: var(--cv-color); font-weight: 600; display: block; margin-bottom: 5px; }
-.timeline-item p { font-size: 0.95rem; color: #475569; line-height: 1.6; }
-.cv-section > p { font-size: 0.95rem; color: #475569; line-height: 1.6; }
-
-/* Responsivitas Sinematik */
+/* --- RESPONSIVE --- */
 @media (max-width: 900px) {
     .editor-container { flex-direction: column; overflow: visible;}
-    .form-section, .preview-section { width: 100%; height: auto; overflow: visible; border-right: none;}
-    .preview-section { padding: 20px; }
-    .a4-paper { transform: scale(0.8); transform-origin: top center; margin-bottom: -150px; border-radius: 12px;}
+    .form-section, .preview-section { width: 100%; height: auto; border-right: none;}
+    .a4-paper { transform: scale(0.7); margin-bottom: -150px;}
 }
-
-```
