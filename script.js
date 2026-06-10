@@ -1,133 +1,363 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Definisi Input dari Form Kiri
+
+    // ============================================================
+    // REFERENSI INPUT
+    // ============================================================
     const inputs = {
-        layout: document.getElementById('layoutSelect'),
-        theme: document.getElementById('themeSelect'),
-        photo: document.getElementById('photoInput'),
-        name: document.getElementById('nameInput'),
-        title: document.getElementById('titleInput'),
-        email: document.getElementById('emailInput'),
-        phone: document.getElementById('phoneInput'),
-        address: document.getElementById('addressInput'),
-        link: document.getElementById('linkInput'),
-        about: document.getElementById('aboutInput'),
-        expTitle: document.getElementById('expTitle'),
-        expDate: document.getElementById('expDate'),
-        expDesc: document.getElementById('expDesc'),
-        eduTitle: document.getElementById('eduTitle'),
-        eduDate: document.getElementById('eduDate'),
-        skills: document.getElementById('skillsInput')
+        layout:     document.getElementById('layoutSelect'),
+        theme:      document.getElementById('themeSelect'),
+        photo:      document.getElementById('photoInput'),
+        name:       document.getElementById('nameInput'),
+        title:      document.getElementById('titleInput'),
+        email:      document.getElementById('emailInput'),
+        phone:      document.getElementById('phoneInput'),
+        address:    document.getElementById('addressInput'),
+        link:       document.getElementById('linkInput'),
+        about:      document.getElementById('aboutInput'),
+        expPos:     document.getElementById('expPos'),
+        expCompany: document.getElementById('expCompany'),
+        expDate:    document.getElementById('expDate'),
+        expDesc:    document.getElementById('expDesc'),
+        eduDegree:  document.getElementById('eduDegree'),
+        eduSchool:  document.getElementById('eduSchool'),
+        eduDate:    document.getElementById('eduDate'),
+        skills:     document.getElementById('skillsInput'),
     };
 
-    // Definisi Output (Kertas A4 Kanan)
-    const previews = {
-        paper: document.getElementById('cvPreview'),
-        photo: document.getElementById('cvPhoto'),
-        name: document.getElementById('cvName'),
-        title: document.getElementById('cvTitle'),
-        email: document.getElementById('cvEmail'),
-        phone: document.getElementById('cvPhone'),
-        address: document.getElementById('cvAddress'),
-        link: document.getElementById('cvLink'),
-        about: document.getElementById('cvAbout'),
-        expTitle: document.getElementById('cvExpTitle'),
-        expDate: document.getElementById('cvExpDate'),
-        expDesc: document.getElementById('cvExpDesc'),
-        eduTitle: document.getElementById('cvEduTitle'),
-        eduDate: document.getElementById('cvEduDate'),
-        skillsList: document.getElementById('cvSkillsList')
-    };
+    const paper = document.getElementById('cvPreview');
+    let currentPhotoBase64 = '';
 
-    // Fungsi Update Tampilan
-    const updatePreview = () => {
-        // Ganti Layout & Tema Warna
-        previews.paper.className = `a4-paper ${inputs.layout.value} ${inputs.theme.value}`;
+    // ============================================================
+    // FUNGSI UTAMA: RENDER ULANG SELURUH CV
+    // ============================================================
+    const renderCV = () => {
+        const layout = inputs.layout.value;
+        const theme  = inputs.theme.value;
 
-        // Update Text Standard
-        previews.name.innerText = inputs.name.value || 'Budi Santoso';
-        previews.title.innerText = inputs.title.value || 'Software Engineer';
-        previews.email.innerText = inputs.email.value || 'budi@email.com';
-        previews.phone.innerText = inputs.phone.value || '0812-xxxx-xxxx';
-        previews.address.innerText = inputs.address.value || 'Jakarta, Indonesia';
-        previews.link.innerText = inputs.link.value || 'linkedin.com/in/budi';
-        previews.about.innerText = inputs.about.value || 'Profesional berpengalaman dengan dedikasi tinggi...';
-        
-        previews.expTitle.innerText = inputs.expTitle.value || 'Manajer Pemasaran - PT Maju Jaya';
-        previews.expDate.innerText = inputs.expDate.value || '2020 - Sekarang';
-        previews.expDesc.innerText = inputs.expDesc.value || 'Memimpin tim marketing beranggotakan 10 orang...';
-        
-        previews.eduTitle.innerText = inputs.eduTitle.value || 'S1 Ilmu Komputer - Universitas Indonesia';
-        previews.eduDate.innerText = inputs.eduDate.value || '2015 - 2019';
-
-        // Update Skills (Ubah koma jadi bullet points)
-        const skillsArray = inputs.skills.value.split(',').filter(skill => skill.trim() !== '');
-        if (skillsArray.length > 0) {
-            previews.skillsList.innerHTML = skillsArray.map(skill => `<li>${skill.trim()}</li>`).join('');
+        // Tentukan HTML berdasarkan layout
+        if (layout === 'layout-sidebar') {
+            paper.innerHTML = buildSidebar(theme);
+        } else if (layout === 'layout-header') {
+            paper.innerHTML = buildHeader(theme);
         } else {
-            previews.skillsList.innerHTML = '<li>Manajemen Proyek</li><li>Desain Grafis</li>';
+            paper.innerHTML = buildMinimalist(theme);
         }
+
+        paper.className = `a4-paper ${layout} ${theme}`;
     };
 
-    // Pasang Event Listener ke semua input teks & dropdown
+    // ============================================================
+    // HELPER: ambil nilai atau default
+    // ============================================================
+    const val = (id, def) => inputs[id] ? (inputs[id].value.trim() || def) : def;
+    const photoHTML = (cls) => currentPhotoBase64
+        ? `<div class="photo-wrapper"><img src="${currentPhotoBase64}" alt="Foto Profil"></div>`
+        : '';
+
+    const skillsHTML = (ulClass) => {
+        const arr = val('skills', 'Manajemen Proyek, Komunikasi, Microsoft Office')
+            .split(',').map(s => s.trim()).filter(Boolean);
+        return arr.map(s => `<li>${s}</li>`).join('');
+    };
+
+    // ============================================================
+    // BUILD LAYOUT 1: SIDEBAR
+    // ============================================================
+    const buildSidebar = () => `
+        <div class="cv-left">
+            ${photoHTML()}
+            <div class="contact-box">
+                <h4>Kontak</h4>
+                <p>${val('email','budi@email.com')}</p>
+                <p>${val('phone','0812-xxxx-xxxx')}</p>
+                <p>${val('address','Jakarta, Indonesia')}</p>
+                <p>${val('link','linkedin.com/in/budi')}</p>
+            </div>
+            <div class="skills-box">
+                <h4>Keahlian</h4>
+                <ul>${skillsHTML()}</ul>
+            </div>
+        </div>
+        <div class="cv-right">
+            <div class="header-name">
+                <h1>${val('name','Budi Santoso')}</h1>
+                <h2>${val('title','Software Engineer')}</h2>
+            </div>
+            <div class="cv-section">
+                <h3>Tentang Saya</h3>
+                <p id="cvAbout">${val('about','Profesional berpengalaman dengan dedikasi tinggi dalam bidangnya.')}</p>
+            </div>
+            <div class="cv-section">
+                <h3>Pengalaman Kerja</h3>
+                <div class="timeline-item">
+                    <div class="item-header">
+                        <h4>${val('expPos','Manajer Pemasaran')}</h4>
+                        <span class="date">${val('expDate','2020 - Sekarang')}</span>
+                    </div>
+                    <div class="company">${val('expCompany','PT Maju Jaya')}</div>
+                    <p>${val('expDesc','Memimpin tim dan merancang strategi untuk mencapai target perusahaan.')}</p>
+                </div>
+            </div>
+            <div class="cv-section">
+                <h3>Pendidikan</h3>
+                <div class="timeline-item">
+                    <div class="item-header">
+                        <h4>${val('eduDegree','S1 Ilmu Komputer')}</h4>
+                        <span class="date">${val('eduDate','2015 - 2019')}</span>
+                    </div>
+                    <div class="company">${val('eduSchool','Universitas Indonesia')}</div>
+                </div>
+            </div>
+        </div>`;
+
+    // ============================================================
+    // BUILD LAYOUT 2: HEADER ATAS (KREATIF)
+    // ============================================================
+    const buildHeader = () => `
+        <div class="cv-header-top">
+            ${currentPhotoBase64 ? `<div class="photo-wrapper"><img src="${currentPhotoBase64}" alt="Foto Profil"></div>` : ''}
+            <div class="header-name">
+                <h1>${val('name','Budi Santoso')}</h1>
+                <h2>${val('title','Software Engineer')}</h2>
+            </div>
+        </div>
+        <div class="cv-contact-bar">
+            <span>&#9993; ${val('email','budi@email.com')}</span>
+            <span>&#9742; ${val('phone','0812-xxxx-xxxx')}</span>
+            <span>&#128205; ${val('address','Jakarta, Indonesia')}</span>
+            <span>&#128279; ${val('link','linkedin.com/in/budi')}</span>
+        </div>
+        <div class="cv-body">
+            <div class="cv-main">
+                <div class="cv-section">
+                    <h3>Tentang Saya</h3>
+                    <p>${val('about','Profesional berpengalaman dengan dedikasi tinggi dalam bidangnya.')}</p>
+                </div>
+                <div class="cv-section">
+                    <h3>Pengalaman Kerja</h3>
+                    <div class="timeline-item">
+                        <div class="item-header">
+                            <h4>${val('expPos','Manajer Pemasaran')}</h4>
+                            <span class="date">${val('expDate','2020 - Sekarang')}</span>
+                        </div>
+                        <div class="company">${val('expCompany','PT Maju Jaya')}</div>
+                        <p>${val('expDesc','Memimpin tim dan merancang strategi untuk mencapai target perusahaan.')}</p>
+                    </div>
+                </div>
+                <div class="cv-section">
+                    <h3>Pendidikan</h3>
+                    <div class="timeline-item">
+                        <div class="item-header">
+                            <h4>${val('eduDegree','S1 Ilmu Komputer')}</h4>
+                            <span class="date">${val('eduDate','2015 - 2019')}</span>
+                        </div>
+                        <div class="company">${val('eduSchool','Universitas Indonesia')}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="cv-sidebar">
+                <h4>Kontak</h4>
+                <p>${val('email','budi@email.com')}</p>
+                <p>${val('phone','0812-xxxx-xxxx')}</p>
+                <p>${val('address','Jakarta, Indonesia')}</p>
+                <p>${val('link','linkedin.com/in/budi')}</p>
+                <h4>Keahlian</h4>
+                <ul>${skillsHTML()}</ul>
+            </div>
+        </div>`;
+
+    // ============================================================
+    // BUILD LAYOUT 3: MINIMALIS (KLASIK)
+    // ============================================================
+    const buildMinimalist = () => `
+        <div class="cv-top-header">
+            ${currentPhotoBase64 ? `<div class="photo-wrapper"><img src="${currentPhotoBase64}" alt="Foto Profil"></div>` : ''}
+            <div>
+                <div class="header-name">
+                    <h1>${val('name','Budi Santoso')}</h1>
+                    <h2>${val('title','Software Engineer')}</h2>
+                </div>
+                <div class="cv-contact-inline">
+                    <span>${val('email','budi@email.com')}</span>
+                    <span>${val('phone','0812-xxxx-xxxx')}</span>
+                    <span>${val('address','Jakarta, Indonesia')}</span>
+                    <span>${val('link','linkedin.com/in/budi')}</span>
+                </div>
+            </div>
+        </div>
+        <div class="cv-body">
+            <div class="cv-main">
+                <div class="cv-section">
+                    <h3>Profil</h3>
+                    <p>${val('about','Profesional berpengalaman dengan dedikasi tinggi dalam bidangnya.')}</p>
+                </div>
+                <div class="cv-section">
+                    <h3>Pengalaman Kerja</h3>
+                    <div class="timeline-item">
+                        <div class="item-header">
+                            <h4>${val('expPos','Manajer Pemasaran')}</h4>
+                            <span class="date">${val('expDate','2020 - Sekarang')}</span>
+                        </div>
+                        <div class="company">${val('expCompany','PT Maju Jaya')}</div>
+                        <p>${val('expDesc','Memimpin tim dan merancang strategi untuk mencapai target perusahaan.')}</p>
+                    </div>
+                </div>
+                <div class="cv-section">
+                    <h3>Pendidikan</h3>
+                    <div class="timeline-item">
+                        <div class="item-header">
+                            <h4>${val('eduDegree','S1 Ilmu Komputer')}</h4>
+                            <span class="date">${val('eduDate','2015 - 2019')}</span>
+                        </div>
+                        <div class="company">${val('eduSchool','Universitas Indonesia')}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="cv-sidebar">
+                <h4>Keahlian</h4>
+                <ul>${skillsHTML()}</ul>
+            </div>
+        </div>`;
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
     Object.keys(inputs).forEach(key => {
-        if(key !== 'photo') {
-            inputs[key].addEventListener('input', updatePreview);
-            inputs[key].addEventListener('change', updatePreview);
+        if (key !== 'photo' && inputs[key]) {
+            inputs[key].addEventListener('input', renderCV);
+            inputs[key].addEventListener('change', renderCV);
         }
     });
 
-    // Upload & Tampil Foto 
+    // Upload Foto
     inputs.photo.addEventListener('change', function() {
         const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previews.photo.src = e.target.result;
-                previews.photo.style.display = 'block';
-                localStorage.setItem('cv_photo_pro', e.target.result);
-            }
-            reader.readAsDataURL(file);
-        }
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            currentPhotoBase64 = e.target.result;
+            localStorage.setItem('cv_photo_pro', currentPhotoBase64);
+            // Tampilkan thumbnail di form
+            const thumb = document.getElementById('thumbImg');
+            const wrapper = document.getElementById('photoPreviewThumb');
+            if (thumb) { thumb.src = currentPhotoBase64; wrapper.style.display = 'block'; }
+            renderCV();
+        };
+        reader.readAsDataURL(file);
     });
 
-    // Fitur Simpan Draft Lokal
+    // Hapus Foto
+    window.clearPhoto = () => {
+        currentPhotoBase64 = '';
+        localStorage.removeItem('cv_photo_pro');
+        inputs.photo.value = '';
+        document.getElementById('photoPreviewThumb').style.display = 'none';
+        renderCV();
+    };
+
+    // ============================================================
+    // SIMPAN DRAFT
+    // ============================================================
     document.getElementById('saveBtn').addEventListener('click', () => {
         const cvData = {};
         Object.keys(inputs).forEach(key => {
-            if(key !== 'photo') cvData[key] = inputs[key].value;
+            if (key !== 'photo' && inputs[key]) cvData[key] = inputs[key].value;
         });
         localStorage.setItem('cv_data_pro', JSON.stringify(cvData));
-        alert('Draft CV berhasil disimpan di browser Anda!');
+        alert('Draft CV berhasil disimpan!');
     });
 
-    // Load Data Saat Dibuka
+    // ============================================================
+    // LOAD DATA TERSIMPAN
+    // ============================================================
     const loadData = () => {
-        const savedData = JSON.parse(localStorage.getItem('cv_data_pro'));
-        if (savedData) {
-            Object.keys(savedData).forEach(key => {
-                if(inputs[key]) inputs[key].value = savedData[key];
-            });
-        }
-        const savedPhoto = localStorage.getItem('cv_photo_pro');
-        if (savedPhoto) {
-            previews.photo.src = savedPhoto;
-            previews.photo.style.display = 'block';
-        }
-        updatePreview();
+        try {
+            const saved = JSON.parse(localStorage.getItem('cv_data_pro'));
+            if (saved) {
+                Object.keys(saved).forEach(key => {
+                    if (inputs[key]) inputs[key].value = saved[key];
+                });
+            }
+            const savedPhoto = localStorage.getItem('cv_photo_pro');
+            if (savedPhoto) {
+                currentPhotoBase64 = savedPhoto;
+                const thumb = document.getElementById('thumbImg');
+                const wrapper = document.getElementById('photoPreviewThumb');
+                if (thumb) { thumb.src = savedPhoto; wrapper.style.display = 'block'; }
+            }
+        } catch(e) {}
+        renderCV();
     };
 
-    // Export PDF
-    document.getElementById('exportPdfBtn').addEventListener('click', () => {
+    // ============================================================
+    // EXPORT PDF — BERSIH TANPA BERANTAKAN
+    // ============================================================
+    document.getElementById('exportPdfBtn').addEventListener('click', async () => {
+        const btn = document.getElementById('exportPdfBtn');
+        btn.disabled = true;
+        btn.textContent = 'Memproses...';
+
         const element = document.getElementById('cvPreview');
+
+        // Simpan style asli
+        const origTransform = element.style.transform;
+        const origBoxShadow = element.style.boxShadow;
+        const origWidth     = element.style.width;
+        const origMinHeight = element.style.minHeight;
+
+        // Reset untuk PDF: ukuran asli, tanpa shadow
+        element.style.transform = 'none';
+        element.style.boxShadow = 'none';
+        element.style.width     = '794px';
+        element.style.minHeight = '1123px';
+        element.classList.add('pdf-export-mode');
+
+        // Tunggu sebentar agar browser render ulang
+        await new Promise(r => setTimeout(r, 300));
+
+        const namePDF = (inputs.name.value.trim() || 'CV') + '_Professional.pdf';
+
         const opt = {
-            margin:       0,
-            filename:     `${inputs.name.value || 'CV'}_Professional.pdf`,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            margin:      0,
+            filename:    namePDF,
+            image:       { type: 'jpeg', quality: 0.98 },
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                logging: false,
+                width: 794,
+                height: 1123,
+                windowWidth: 794,
+            },
+            jsPDF: {
+                unit: 'px',
+                format: [794, 1123],
+                orientation: 'portrait',
+                hotfixes: ['px_scaling'],
+            }
         };
-        html2pdf().set(opt).from(element).save();
+
+        try {
+            await html2pdf().set(opt).from(element).save();
+        } catch(err) {
+            alert('Gagal export PDF. Coba lagi.');
+            console.error(err);
+        }
+
+        // Kembalikan style
+        element.style.transform = origTransform;
+        element.style.boxShadow = origBoxShadow;
+        element.style.width     = origWidth;
+        element.style.minHeight = origMinHeight;
+        element.classList.remove('pdf-export-mode');
+
+        btn.disabled = false;
+        btn.textContent = 'Export PDF';
     });
 
+    // ============================================================
+    // INIT
+    // ============================================================
     loadData();
 });
